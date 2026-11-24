@@ -65,6 +65,39 @@ El panel permite:
 - Activar ramas alternativas: presupuesto insuficiente, Compras no puede
   gestionar, agente caído.
 
+## Cómo probarlo paso a paso
+
+Todo desde PowerShell, en la carpeta del proyecto.
+
+```powershell
+# 1. Entorno (fuera de OneDrive para evitar bloqueos de sincronización)
+python -m venv C:\Users\123cr\.venvs\sma-red-hospitales
+$py = "C:\Users\123cr\.venvs\sma-red-hospitales\Scripts\python.exe"
+
+# 2. Dependencias
+& $py -m pip install -r requirements.txt
+
+# 3. Pruebas automáticas -> debe decir "6 passed"
+& $py -m pytest
+
+# 4. Escenario por consola -> debe mostrar 16 líneas [OK]
+& $py -m sma.run
+
+# 5. Panel web -> abre http://localhost:8501
+& $py -m streamlit run app.py
+```
+
+Qué mirar:
+
+- En `python -m sma.run`, la sección **Métricas** debe dar cobertura `1.0`,
+  orden `confirmada` y presupuesto restante positivo.
+- En el panel, pestaña **Verificación**: 16/16 en verde.
+- Pestaña **Diagrama de secuencia**: se dibuja desde la traza. Descárgalo en
+  `.mmd` para el informe.
+- Barra lateral: activa **Forzar presupuesto insuficiente** o **Compras no puede
+  gestionar la compra** y pulsa **Re-ejecutar**. Verás el `FAILURE`
+  correspondiente y ninguna orden generada.
+
 ## Despliegue gratuito (Streamlit Community Cloud)
 
 1. Sube el repo a GitHub como `sma-red-hospitales`.
