@@ -18,6 +18,8 @@ EVENTOS = {
     "retraso_proveedor",
     "fallo_compra",
     "fallo_presupuesto",
+    "replanificacion",
+    "escalado",
     "cierre",
 }
 
@@ -42,9 +44,23 @@ class AgenteSupervisor(AgenteBase):
                 self.registros.append({"evento": tipo, **detalle})
                 self.accion("registrarEvento", {"evento": tipo})
                 if tipo == "cierre":
-                    self._generar_reporte()
+                    self._generar_reporte(mensaje.contenido)
 
+        self._verificar_sin_riesgo()
         self._verificar_disponibilidad()
+
+    # ------------------------------------------------------------------
+    def _verificar_sin_riesgo(self) -> None:
+        if self.reporte is not None:
+            return
+        if self.model.ronda < self.model.config.evento.ronda_inicio + 3:
+            return
+        if self.registros:
+            return
+        self.model.resultado = "sin_riesgo"
+        self.model.cierre = True
+        self.accion("generarReporte", {"resultado": "sin_riesgo"})
+        self._generar_reporte({"resultado": "sin_riesgo", "motivo": "sin_riesgo"})
 
     # ------------------------------------------------------------------
     def _verificar_disponibilidad(self) -> None:
@@ -60,6 +76,14 @@ class AgenteSupervisor(AgenteBase):
             {"tipo": "fallo_detectado", "agente": "compras"},
         )
 
-    def _generar_reporte(self) -> None:
+    def _generar_reporte(self, contenido: dict[str, Any] | None = None) -> None:
+        contenido = contenido or {}
         self.reporte = self.model.metricas()
+        self.reporte["resultado"] = contenido.get(
+            "resultado", self.model.resultado or "exito"
+        )
+        self.reporte["motivo"] = contenido.get("motivo", "")
+        self.reporte["riesgos_atendidos"] = contenido.get(
+            "riesgos_atendidos", len(self.model.decisiones)
+        )
         self.accion("generarReporte", self.reporte)

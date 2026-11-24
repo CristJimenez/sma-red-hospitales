@@ -17,10 +17,9 @@ class AgenteInventario(AgenteBase):
 
     def procesar(self, mensajes: list[Any]) -> None:
         for mensaje in mensajes:
-            if (
-                mensaje.performativa == QUERY_REF
-                and mensaje.contenido.get("consulta") == "excedentes"
-            ):
+            if mensaje.performativa == QUERY_REF and mensaje.contenido.get(
+                "consulta"
+            ) in ("excedentes", "excedentes_emergencia"):
                 self._responder_excedentes(mensaje)
 
         if self.model.ronda == self.model.config.evento.ronda_inicio:
@@ -69,13 +68,17 @@ class AgenteInventario(AgenteBase):
         config = self.model.config
         med_id = consulta.contenido["medicamento"]
         hospital_riesgo = consulta.contenido.get("hospital")
-        self.accion("leerRegistros", {"medicamento": med_id})
+        emergencia = consulta.contenido.get("consulta") == "excedentes_emergencia"
+        modo = "emergencia" if emergencia else "normal"
+        colchon = 0.0 if emergencia else 2.0
+        excluir = set(consulta.contenido.get("excluir", [])) | {hospital_riesgo}
+        self.accion("leerRegistros", {"medicamento": med_id, "modo": modo})
 
         excedentes: dict[str, dict[str, Any]] = {}
         for hospital in config.hospitales.values():
-            if hospital.id == hospital_riesgo:
+            if hospital.id in excluir:
                 continue
-            cantidad = hospital.excedente(med_id)
+            cantidad = hospital.excedente(med_id, colchon_dias=colchon)
             if cantidad <= 0:
                 continue
             lotes = hospital.lotes.get(med_id, [])
@@ -83,10 +86,12 @@ class AgenteInventario(AgenteBase):
             excedentes[hospital.id] = {
                 "cantidad": cantidad,
                 "lote_vence_en_dias": vence,
+                "cadena_frio_ok": True,
             }
 
         respuesta = {
             "tipo": "excedentes",
+            "modo": modo,
             "medicamento": med_id,
             "hospital_riesgo": hospital_riesgo,
             "excedentes": excedentes,

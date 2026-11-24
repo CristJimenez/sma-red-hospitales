@@ -15,8 +15,10 @@ def test_situacion_1_completa() -> None:
     assert modelo.orden_actual is not None
     assert modelo.orden_actual.estado == "confirmada"
     assert modelo.orden_actual.proveedor_id == "P2"
-    assert modelo.presupuesto_restante < modelo.config.presupuesto_inicial
+    assert modelo.metricas()["traslado_recibido"] == 470
+    assert modelo.metricas()["cantidad_comprada"] == 110
     assert modelo.metricas()["cobertura_proyectada"] >= 0.999
+    assert modelo.resultado == "exito"
 
 
 def test_presupuesto_insuficiente() -> None:
@@ -33,7 +35,9 @@ def test_presupuesto_insuficiente() -> None:
     assert fallos, "debería emitirse un FAILURE por presupuesto"
     assert fallos[0]["contenido"]["motivo"] == "presupuesto_insuficiente"
     assert modelo.orden_actual is None
-    assert modelo.cierre is False
+    assert modelo.resultado == "parcial"
+    assert modelo.riesgo_residual > 0
+    assert modelo.replanificaciones >= 1
 
 
 def test_compras_no_puede_gestionar() -> None:
@@ -49,6 +53,8 @@ def test_compras_no_puede_gestionar() -> None:
 
     assert "no_puedo_gestionar_compra" in motivos
     assert modelo.orden_actual is None
+    assert modelo.resultado == "parcial"
+    assert modelo.riesgo_residual > 0
 
 
 def test_ejecucion_determinista() -> None:

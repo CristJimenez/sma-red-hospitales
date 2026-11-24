@@ -160,6 +160,10 @@ class Opciones:
     compras_puede_gestionar: bool = True
     forzar_presupuesto_insuficiente: bool = False
     simular_agente_caido: bool = False
+    transporte_refrigerado: bool = True
+    politica_presupuesto: str = "rechazar"
+    traslado_emergencia: bool = True
+    prioridad_riesgos: str = "agotamiento"  # agotamiento | orden_deteccion
 
 
 @dataclass
@@ -172,6 +176,7 @@ class Configuracion:
     proveedores: dict[str, Proveedor]
     evento: Evento
     opciones: Opciones = field(default_factory=Opciones)
+    tiempo_traslado_dias: int = 1
 
     def factor_brote(self, hospital_id: str, medicamento_id: str) -> float:
         evento = self.evento

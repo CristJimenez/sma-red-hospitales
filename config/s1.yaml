@@ -9,6 +9,13 @@ opciones:
   compras_puede_gestionar: true
   forzar_presupuesto_insuficiente: false
   simular_agente_caido: false
+  transporte_refrigerado: true
+  politica_presupuesto: rechazar   # rechazar | parcial
+  traslado_emergencia: true
+  prioridad_riesgos: agotamiento    # agotamiento | orden_deteccion
+
+# Días que tarda un traslado entre hospitales de la red
+tiempo_traslado_dias: 1
 
 evento:
   tipo: brote_respiratorio

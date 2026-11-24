@@ -6,6 +6,7 @@ que el dibujo y la ejecución no pueden divergir.
 
 from __future__ import annotations
 
+from copy import deepcopy
 from typing import Any
 
 from .acl import MensajeACL
@@ -63,7 +64,7 @@ class Traza:
                 "tipo": "accion",
                 "agente": agente,
                 "accion": accion,
-                "detalle": detalle or {},
+                "detalle": deepcopy(detalle) if detalle else {},
             }
         )
 
@@ -80,7 +81,7 @@ class Traza:
                 "ronda": ronda,
                 "tipo": "entorno",
                 "accion": accion,
-                "detalle": detalle or {},
+                "detalle": deepcopy(detalle) if detalle else {},
                 "origen": origen,
                 "destino": destino,
             }

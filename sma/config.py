@@ -38,9 +38,24 @@ def _generar_historial(
     return serie
 
 
-def cargar_config(ruta: str | Path | None = None) -> Configuracion:
+def _fusionar(base: dict[str, Any], extra: dict[str, Any]) -> dict[str, Any]:
+    """Mezcla recursiva: los diccionarios se combinan, el resto se reemplaza."""
+    for clave, valor in extra.items():
+        actual = base.get(clave)
+        if isinstance(valor, dict) and isinstance(actual, dict):
+            _fusionar(actual, valor)
+        else:
+            base[clave] = valor
+    return base
+
+
+def cargar_config(
+    ruta: str | Path | None = None, overrides: dict[str, Any] | None = None
+) -> Configuracion:
     ruta = Path(ruta) if ruta else RUTA_S1
     datos: dict[str, Any] = yaml.safe_load(ruta.read_text(encoding="utf-8"))
+    if overrides:
+        datos = _fusionar(datos, overrides)
 
     semilla = int(datos.get("semilla", 7))
 
@@ -94,4 +109,5 @@ def cargar_config(ruta: str | Path | None = None) -> Configuracion:
         proveedores=proveedores,
         evento=evento,
         opciones=opciones,
+        tiempo_traslado_dias=int(datos.get("tiempo_traslado_dias", 1)),
     )

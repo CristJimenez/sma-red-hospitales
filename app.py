@@ -1,7 +1,8 @@
-"""Panel web de la Situación 1.
+"""Panel web del SMA de abastecimiento hospitalario.
 
-Ejecuta el SMA y muestra la traza real, las métricas y el diagrama de
-secuencia generado desde esa misma traza.
+Ejecuta cualquiera de las variantes del escenario y muestra la traza real, las
+métricas, la verificación y el diagrama de secuencia generado desde esa misma
+traza.
 """
 
 from __future__ import annotations
@@ -12,9 +13,9 @@ import pandas as pd
 import streamlit as st
 import streamlit.components.v1 as components
 
-from sma.config import cargar_config
 from sma.run import ejecutar
 from sma.scenario.s1 import verificar
+from sma.variantes import cargar_variante, listar_variantes
 
 st.set_page_config(
     page_title="SMA Red de Hospitales",
@@ -36,27 +37,41 @@ FASES = {
     11: "E · reporte",
 }
 
+VARIANTES = listar_variantes()
+
 
 @st.cache_data(show_spinner=False)
-def correr(
-    forzar_presupuesto: bool, compras_no_puede: bool, simular_caido: bool
-) -> dict:
-    config = cargar_config()
-    config.opciones.forzar_presupuesto_insuficiente = forzar_presupuesto
-    config.opciones.compras_puede_gestionar = not compras_no_puede
-    config.opciones.simular_agente_caido = simular_caido
-
-    modelo = ejecutar(config)
+def correr(nombre: str) -> dict:
+    variante = cargar_variante(nombre)
+    modelo = ejecutar(variante.configuracion(), max_rondas=24)
+    metricas = modelo.metricas()
+    real = {
+        "accion": metricas["accion"],
+        "traslado": metricas["traslado_recibido"],
+        "compra": metricas["cantidad_comprada"],
+        "proveedor": modelo.orden_actual.proveedor_id if modelo.orden_actual else None,
+        "orden": modelo.orden_actual is not None,
+        "resultado": metricas["resultado"],
+        "riesgo_residual": metricas["riesgo_residual"],
+        "decisiones": len(modelo.decisiones),
+        "ordenes": len(modelo.ordenes),
+        "donantes": modelo.decisiones[0].get("donantes") if modelo.decisiones else None,
+    }
     return {
-        "metricas": modelo.metricas(),
-        "checks": verificar(modelo),
+        "metricas": metricas,
+        "checks": verificar(modelo) if nombre == "base" else [],
         "eventos": modelo.traza.eventos,
         "mermaid": modelo.traza.a_mermaid(),
         "decision": modelo.decision,
+        "esperado": variante.esperado,
+        "real": real,
+        "titulo": variante.titulo,
+        "descripcion": variante.descripcion,
+        "resultado": modelo.resultado,
     }
 
 
-def resumen(contenido: dict, maximo: int = 70) -> str:
+def resumen(contenido: dict, maximo: int = 80) -> str:
     partes = [f"{clave}={valor}" for clave, valor in contenido.items()]
     texto = ", ".join(partes)
     return texto[: maximo - 3] + "..." if len(texto) > maximo else texto
@@ -106,53 +121,57 @@ def tabla_eventos(eventos: list[dict]) -> pd.DataFrame:
 
 st.title("SMA de abastecimiento de medicamentos")
 st.caption(
-    "Situación 1 · brote respiratorio en el Hospital A · Mesa 3 + capa FIPA-ACL · "
+    "Red de hospitales públicos · Mesa 3 + capa FIPA-ACL · "
     "el diagrama de secuencia se genera desde la traza real."
 )
 
 with st.sidebar:
     st.header("Escenario")
-    st.markdown(
-        "**Hospital A** (alta complejidad) sufre un brote respiratorio. "
-        "Inventario detecta el riesgo, Pronóstico proyecta la demanda y el "
-        "Coordinador combina traslado desde el Hospital B con compra al "
-        "proveedor alterno."
+    nombre = st.selectbox(
+        "Variante",
+        options=list(VARIANTES),
+        format_func=lambda clave: VARIANTES[clave].titulo,
     )
+    variante = VARIANTES[nombre]
+    st.markdown(variante.descripcion)
     st.divider()
-    st.subheader("Ramas alternativas")
-    forzar_presupuesto = st.checkbox("Forzar presupuesto insuficiente")
-    compras_no_puede = st.checkbox("Compras no puede gestionar la compra")
-    simular_caido = st.checkbox("Simular agente caído (aviso del Supervisor)")
-    st.divider()
-    if st.button("Re-ejecutar escenario", type="primary"):
+    if st.button("Re-ejecutar", type="primary"):
         st.cache_data.clear()
         st.rerun()
     st.caption("Semilla fija: cada ejecución produce exactamente la misma traza.")
 
-resultado = correr(forzar_presupuesto, compras_no_puede, simular_caido)
+resultado = correr(nombre)
 metricas = resultado["metricas"]
+real = resultado["real"]
+esperado = resultado["esperado"]
 checks = resultado["checks"]
 
 ok = sum(1 for check in checks if check["ok"])
+cumple = all(real.get(clave) == valor for clave, valor in esperado.items())
 
 columnas = st.columns(6)
-columnas[0].metric("Verificaciones", f"{ok}/{len(checks)}")
-columnas[1].metric("Cobertura proyectada", f"{metricas['cobertura_proyectada'] * 100:.0f}%")
+columnas[0].metric("Variante", "OK" if cumple else "Revisar")
+columnas[1].metric("Cobertura", f"{metricas['cobertura_proyectada'] * 100:.0f}%")
 columnas[2].metric("Traslado", f"{metricas['traslado_recibido']} uds")
 columnas[3].metric("Compra", f"{metricas['cantidad_comprada']} uds")
 columnas[4].metric("Coste", f"{metricas['coste_compra']:.2f} €")
-columnas[5].metric("Presupuesto restante", f"{metricas['presupuesto_restante']:.2f} €")
+columnas[5].metric("Riesgo residual", f"{metricas['riesgo_residual']} uds")
 
-if metricas["orden_estado"]:
+if resultado["resultado"] == "exito":
     st.success(
-        f"Orden de compra en estado **{metricas['orden_estado']}** · "
-        f"{metricas['demanda_proyectada']} unidades de demanda proyectada cubiertas."
+        f"Resultado **{resultado['resultado']}** · acción `{metricas['accion']}` · "
+        f"{metricas['rondas']} rondas · {metricas['mensajes']} mensajes ACL."
     )
+elif resultado["resultado"] == "sin_riesgo":
+    st.info("No se detectó riesgo: el sistema no genera órdenes.")
 else:
-    st.warning("No se generó orden de compra en esta ejecución.")
+    st.warning(
+        f"Resultado **{resultado['resultado']}** · acción `{metricas['accion']}` · "
+        f"riesgo residual {metricas['riesgo_residual']} uds."
+    )
 
 pestanas = st.tabs(
-    ["Secuencia", "Verificación", "Diagrama de secuencia", "Traza y métricas"]
+    ["Secuencia", "Verificación", "Matriz de casos", "Diagrama", "Traza"]
 )
 
 with pestanas[0]:
@@ -160,27 +179,67 @@ with pestanas[0]:
     st.dataframe(
         tabla_eventos(resultado["eventos"]),
         hide_index=True,
-        height=560,
+        height=540,
     )
 
 with pestanas[1]:
-    st.subheader("Pasos del escenario")
+    if checks:
+        st.subheader("Pasos del escenario base")
+        st.dataframe(
+            pd.DataFrame(
+                [
+                    {
+                        "": "✅" if check["ok"] else "❌",
+                        "Paso": check["nombre"],
+                        "Detalle": check["detalle"],
+                    }
+                    for check in checks
+                ]
+            ),
+            hide_index=True,
+            height=560,
+        )
+    else:
+        st.subheader("Esperado vs. real")
+        st.dataframe(
+            pd.DataFrame(
+                [
+                    {
+                        "": "✅" if real.get(clave) == valor else "❌",
+                        "Métrica": clave,
+                        "Esperado": valor,
+                        "Real": real.get(clave),
+                    }
+                    for clave, valor in esperado.items()
+                ]
+            ),
+            hide_index=True,
+        )
+
+with pestanas[2]:
+    st.subheader("Todos los 'y si' del escenario")
+    st.caption(
+        "Cada fila es una variante declarativa sobre `config/s1.yaml`. "
+        "El selector de la izquierda la ejecuta."
+    )
     st.dataframe(
         pd.DataFrame(
             [
                 {
-                    "": "✅" if check["ok"] else "❌",
-                    "Paso": check["nombre"],
-                    "Detalle": check["detalle"],
+                    "Variante": clave,
+                    "Caso": item.titulo,
+                    "Acción esperada": item.esperado.get("accion", ""),
+                    "Orden": "sí" if item.esperado.get("orden") else "no",
+                    "Resultado": item.esperado.get("resultado", ""),
                 }
-                for check in checks
+                for clave, item in VARIANTES.items()
             ]
         ),
         hide_index=True,
-        height=560,
+        height=520,
     )
 
-with pestanas[2]:
+with pestanas[3]:
     st.subheader("Generado desde la traza")
     st.caption(
         "Este diagrama no está dibujado a mano: se produce a partir de los "
@@ -204,11 +263,11 @@ with pestanas[2]:
     st.download_button(
         "Descargar diagrama (.mmd)",
         resultado["mermaid"],
-        file_name="s1_secuencia.mmd",
+        file_name=f"{nombre}_secuencia.mmd",
         mime="text/plain",
     )
 
-with pestanas[3]:
+with pestanas[4]:
     st.subheader("Métricas")
     st.json(metricas)
     st.subheader("Decisión del Coordinador")
@@ -216,6 +275,6 @@ with pestanas[3]:
     st.download_button(
         "Descargar traza completa (.json)",
         json.dumps({"eventos": resultado["eventos"]}, ensure_ascii=False, indent=2),
-        file_name="s1_traza.json",
+        file_name=f"{nombre}_traza.json",
         mime="application/json",
     )

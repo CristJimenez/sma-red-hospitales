@@ -38,6 +38,10 @@ class RedHospitalaria(mesa.Model):
         self.traslado_total = 0
         self.demanda_proyectada: int | None = None
         self.decision: dict[str, Any] | None = None
+        self.decisiones: list[dict[str, Any]] = []
+        self.resultado = ""
+        self.riesgo_residual = 0
+        self.replanificaciones = 0
         self.cierre = False
         self.latidos: dict[str, int] = {}
 
@@ -158,10 +162,13 @@ class RedHospitalaria(mesa.Model):
         hospital = self.config.hospitales[evento.hospital]
         med = evento.medicamento
         stock = hospital.stock(med)
-        orden = self.orden_actual
-        comprado = orden.cantidad if orden else 0
+        comprado = sum(orden.cantidad for orden in self.ordenes)
+        coste = sum(orden.coste for orden in self.ordenes)
         demanda = self.demanda_proyectada or 0
         cobertura = (stock + comprado) / demanda if demanda else 0.0
+        accion = (self.decision or {}).get("accion")
+        if accion is None and self.resultado == "sin_riesgo":
+            accion = "ninguna"
 
         return {
             "hospital": hospital.id,
@@ -171,12 +178,17 @@ class RedHospitalaria(mesa.Model):
             "umbral": round(hospital.umbral(med), 2),
             "traslado_recibido": self.traslado_total,
             "cantidad_comprada": comprado,
-            "coste_compra": round(orden.coste, 2) if orden else 0.0,
+            "coste_compra": round(coste, 2),
             "presupuesto_inicial": self.config.presupuesto_inicial,
             "presupuesto_restante": round(self.presupuesto_restante, 2),
-            "orden_estado": orden.estado if orden else None,
+            "orden_estado": self.orden_actual.estado if self.orden_actual else None,
             "demanda_proyectada": demanda,
             "cobertura_proyectada": round(cobertura, 3),
+            "accion": accion,
+            "motivo": (self.decision or {}).get("motivo"),
+            "riesgo_residual": self.riesgo_residual,
+            "replanificaciones": self.replanificaciones,
+            "resultado": self.resultado or None,
             "rondas": self.ronda,
             "mensajes": len(self.traza.mensajes()),
             "eventos_registrados": len(self.supervisor.registros),

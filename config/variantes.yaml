@@ -1,0 +1,257 @@
+# Matriz de "y si" del escenario.
+#
+# Cada variante es un *override* sobre config/s1.yaml: no duplica el escenario,
+# solo cambia los datos que hacen falta para provocar el caso. Los tests leen
+# `esperado` y comprueban la decisión resultante.
+
+variantes:
+  base:
+    titulo: "Brote con excedente parcial"
+    descripcion: >-
+      El excedente de la red no alcanza: se traslada todo lo disponible y se
+      compra el resto al proveedor alterno.
+    esperado:
+      accion: traslado_y_compra
+      traslado: 470
+      compra: 110
+      proveedor: P2
+      orden: true
+      resultado: exito
+      donantes: [H_B, H_C]
+    overrides: {}
+
+  solo_traslado:
+    titulo: "El excedente cubre toda la necesidad"
+    descripcion: >-
+      Con más stock en el Hospital B el traslado cubre la demanda proyectada y
+      no se emite ninguna orden de compra.
+    esperado:
+      accion: traslado
+      traslado: 580
+      compra: 0
+      orden: false
+      resultado: exito
+      donantes: [H_B]
+    overrides:
+      hospitales:
+        H_B:
+          inventario:
+            amoxicilina: {cantidad: 700}
+
+  solo_compra:
+    titulo: "No hay excedente en la red"
+    descripcion: >-
+      Ningún hospital puede ceder unidades: el Coordinador compra toda la
+      necesidad al proveedor que llega a tiempo.
+    esperado:
+      accion: compra
+      traslado: 0
+      compra: 460
+      proveedor: P2
+      orden: true
+      resultado: exito
+    overrides:
+      hospitales:
+        H_A:
+          inventario:
+            amoxicilina: {cantidad: 240}
+        H_B:
+          inventario:
+            amoxicilina: {cantidad: 50}
+        H_C:
+          inventario:
+            amoxicilina: {cantidad: 24}
+
+  sin_necesidad:
+    titulo: "El stock cubre la demanda proyectada"
+    descripcion: >-
+      No se detecta riesgo: el sistema no actúa y el Supervisor cierra con un
+      reporte de "sin riesgo".
+    esperado:
+      accion: ninguna
+      traslado: 0
+      compra: 0
+      orden: false
+      resultado: sin_riesgo
+    overrides:
+      hospitales:
+        H_A:
+          inventario:
+            amoxicilina: {cantidad: 800}
+
+  excedente_por_vencer:
+    titulo: "El lote del donante caduca antes de poder usarse"
+    descripcion: >-
+      El lote del Hospital B vence en un día: se descarta y solo se usa el
+      excedente del Hospital C.
+    esperado:
+      accion: traslado_y_compra
+      traslado: 126
+      compra: 454
+      proveedor: P2
+      orden: true
+      donantes: [H_C]
+    overrides:
+      hospitales:
+        H_B:
+          inventario:
+            amoxicilina: {cantidad: 400, vence_en_dias: 1}
+
+  cadena_frio:
+    titulo: "Medicamento refrigerado sin transporte refrigerado"
+    descripcion: >-
+      La insulina exige cadena de frío y la red no dispone de transporte
+      refrigerado: los excedentes no son aptos y se compra todo.
+    esperado:
+      accion: compra
+      traslado: 0
+      compra: 108
+      proveedor: P2
+      orden: true
+      donantes: []
+    overrides:
+      evento:
+        medicamento: insulina
+        descripcion: Brote con aumento de demanda de insulina
+      opciones:
+        transporte_refrigerado: false
+      hospitales:
+        H_A:
+          inventario:
+            amoxicilina: {cantidad: 400}
+            insulina: {cantidad: 48}
+
+  proveedores_retrasados:
+    titulo: "Ningún proveedor llega antes del agotamiento"
+    descripcion: >-
+      Los dos proveedores incumplen el plazo: se traslada el máximo, se intenta
+      un traslado de emergencia y el resto se escala como riesgo residual.
+    esperado:
+      accion: traslado_parcial
+      traslado: 494
+      compra: 0
+      orden: false
+      resultado: parcial
+      riesgo_residual: 86
+    overrides:
+      proveedores:
+        P1:
+          retraso_dias: 12
+        P2:
+          retraso_dias: 30
+
+  sin_donantes_ni_proveedores:
+    titulo: "Sin excedente y sin proveedor viable"
+    descripcion: >-
+      No hay nada que trasladar y ningún proveedor llega a tiempo: el
+      Coordinador escala la urgencia sin generar orden.
+    esperado:
+      accion: escalar
+      traslado: 0
+      compra: 0
+      orden: false
+      resultado: fallo
+      riesgo_residual: 460
+    overrides:
+      opciones:
+        traslado_emergencia: false
+      proveedores:
+        P1:
+          retraso_dias: 12
+        P2:
+          retraso_dias: 30
+      hospitales:
+        H_A:
+          inventario:
+            amoxicilina: {cantidad: 240}
+        H_B:
+          inventario:
+            amoxicilina: {cantidad: 50}
+        H_C:
+          inventario:
+            amoxicilina: {cantidad: 24}
+
+  presupuesto_insuficiente:
+    titulo: "La compra no cabe en el presupuesto"
+    descripcion: >-
+      Compras rechaza la orden por presupuesto; el Coordinador replanifica con
+      un traslado de emergencia y escala el riesgo residual.
+    esperado:
+      accion: traslado_parcial
+      traslado: 494
+      compra: 0
+      orden: false
+      resultado: parcial
+      riesgo_residual: 86
+    overrides:
+      opciones:
+        forzar_presupuesto_insuficiente: true
+
+  compras_no_puede:
+    titulo: "Compras rechaza gestionar la compra"
+    descripcion: >-
+      Compras responde FAILURE; el Coordinador replanifica con traslado de
+      emergencia y deja constancia del riesgo residual.
+    esperado:
+      accion: traslado_parcial
+      traslado: 494
+      compra: 0
+      orden: false
+      resultado: parcial
+      riesgo_residual: 86
+    overrides:
+      opciones:
+        compras_puede_gestionar: false
+
+  proveedor_habitual_ok:
+    titulo: "El proveedor habitual cumple el plazo"
+    descripcion: >-
+      Sin retraso en el Proveedor 1, la compra va al habitual y no hace falta
+      cambiar de proveedor.
+    esperado:
+      accion: traslado_y_compra
+      traslado: 470
+      compra: 110
+      proveedor: P1
+      orden: true
+      resultado: exito
+    overrides:
+      proveedores:
+        P1:
+          retraso_dias: 0
+
+  presupuesto_parcial:
+    titulo: "Compra parcial con el presupuesto disponible"
+    descripcion: >-
+      La política es comprar lo que quepa: se compran 76 unidades y quedan 34
+      de riesgo residual.
+    esperado:
+      accion: traslado_y_compra
+      traslado: 470
+      compra: 76
+      proveedor: P2
+      orden: true
+      resultado: parcial
+      riesgo_residual: 34
+    overrides:
+      presupuesto_inicial: 200.0
+      opciones:
+        politica_presupuesto: parcial
+
+  dos_hospitales:
+    titulo: "Dos hospitales compiten por el mismo excedente"
+    descripcion: >-
+      H_A y H_B quedan por debajo del umbral. El Coordinador atiende primero el
+      riesgo con menos días de cobertura y luego el segundo, generando dos
+      órdenes de compra.
+    esperado:
+      accion: compra
+      orden: true
+      resultado: exito
+      decisiones: 2
+      ordenes: 2
+    overrides:
+      hospitales:
+        H_B:
+          inventario:
+            amoxicilina: {cantidad: 40}

@@ -7,6 +7,7 @@ intercambiable (en proceso hoy, XMPP mañana) sin tocar a los agentes.
 
 from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -58,7 +59,7 @@ class MensajeACL:
             "performativa": self.performativa,
             "emisor": self.emisor,
             "receptor": self.receptor,
-            "contenido": self.contenido,
+            "contenido": deepcopy(self.contenido),
             "protocolo": self.protocolo,
             "conversation_id": self.conversation_id,
             "reply_with": self.reply_with,

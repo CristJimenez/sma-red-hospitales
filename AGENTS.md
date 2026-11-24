@@ -29,6 +29,10 @@ El venv vive fuera de OneDrive a propósito. Para recrearlo:
   los eventos reales. No mantener un diagrama aparte.
 - **Verificación**: `sma/scenario/s1.py` contiene los 16 pasos comprobables.
   `app.py` y los tests consumen la misma función `verificar()`.
+- **Decisión pura**: `sma/decision.py` no conoce agentes ni mensajes. Si cambia
+  una regla, se prueba ahí sin simular rondas.
+- **Variantes**: `config/variantes.yaml` son overrides de `config/s1.yaml`.
+  `tests/test_variantes.py` parametriza todas; no añadir casos por código.
 - **Configuración**: `config/s1.yaml`, catálogo abierto (N medicamentos).
 
 ## Trampas del entorno
@@ -40,6 +44,8 @@ El venv vive fuera de OneDrive a propósito. Para recrearlo:
 
 ## No romper
 
-- `pytest` debe quedar en verde (5 pruebas: flujo completo, dos ramas
-  alternativas, determinismo y Mermaid).
+- `pytest` debe quedar en verde (41 pruebas: flujo base, matriz de variantes,
+  determinismo, decisiones puras, Mermaid y panel).
 - La semilla fija debe producir siempre la misma traza.
+- La traza se copia al registrarse: un mensaje no puede cambiar después de
+  enviarse (afecta al diagrama y al informe).
