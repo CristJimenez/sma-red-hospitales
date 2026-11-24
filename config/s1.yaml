@@ -1,0 +1,128 @@
+# Situación 1: riesgo de desabastecimiento por brote respiratorio
+# El catálogo de medicamentos es abierto: añadir una entrada basta.
+
+semilla: 7
+presupuesto_inicial: 5000.0
+horizonte_pronostico_dias: 14
+
+opciones:
+  compras_puede_gestionar: true
+  forzar_presupuesto_insuficiente: false
+  simular_agente_caido: false
+
+evento:
+  tipo: brote_respiratorio
+  descripcion: Aumento de infecciones respiratorias en el Hospital A
+  hospital: H_A
+  medicamento: amoxicilina
+  factor_consumo: 1.6
+  ronda_inicio: 1
+
+medicamentos:
+  amoxicilina:
+    nombre: Amoxicilina 500 mg
+    critico: true
+    cadena_frio: false
+    precio_referencia: 2.50
+    vida_util_dias: 365
+  insulina:
+    nombre: Insulina glargina 100 UI/ml
+    critico: true
+    cadena_frio: true
+    precio_referencia: 18.00
+    vida_util_dias: 180
+  salbutamol:
+    nombre: Salbutamol inhalador 100 mcg
+    critico: true
+    cadena_frio: false
+    precio_referencia: 7.20
+    vida_util_dias: 540
+  ceftriaxona:
+    nombre: Ceftriaxona 1 g
+    critico: true
+    cadena_frio: false
+    precio_referencia: 4.10
+    vida_util_dias: 730
+  morfina:
+    nombre: Morfina 10 mg
+    critico: true
+    cadena_frio: false
+    precio_referencia: 3.30
+    vida_util_dias: 900
+
+hospitales:
+  H_A:
+    nombre: Hospital A
+    complejidad: alta
+    camas: 600
+    stock_seguridad_dias: 5
+    inventario:
+      amoxicilina: {cantidad: 120, lote: L-A-001, vence_en_dias: 90}
+      insulina: {cantidad: 90, lote: L-A-002, vence_en_dias: 60}
+      salbutamol: {cantidad: 140, lote: L-A-003, vence_en_dias: 300}
+      ceftriaxona: {cantidad: 200, lote: L-A-004, vence_en_dias: 400}
+      morfina: {cantidad: 60, lote: L-A-005, vence_en_dias: 500}
+    consumo_diario:
+      amoxicilina: 30
+      insulina: 6
+      salbutamol: 9
+      ceftriaxona: 12
+      morfina: 2
+
+  H_B:
+    nombre: Hospital B
+    complejidad: media
+    camas: 250
+    stock_seguridad_dias: 5
+    inventario:
+      amoxicilina: {cantidad: 400, lote: L-B-001, vence_en_dias: 45}
+      insulina: {cantidad: 60, lote: L-B-002, vence_en_dias: 120}
+      salbutamol: {cantidad: 80, lote: L-B-003, vence_en_dias: 260}
+      ceftriaxona: {cantidad: 120, lote: L-B-004, vence_en_dias: 380}
+      morfina: {cantidad: 40, lote: L-B-005, vence_en_dias: 450}
+    consumo_diario:
+      amoxicilina: 8
+      insulina: 3
+      salbutamol: 4
+      ceftriaxona: 5
+      morfina: 1
+
+  H_C:
+    nombre: Hospital C
+    complejidad: baja
+    camas: 120
+    stock_seguridad_dias: 4
+    inventario:
+      amoxicilina: {cantidad: 150, lote: L-C-001, vence_en_dias: 150}
+      insulina: {cantidad: 40, lote: L-C-002, vence_en_dias: 90}
+      salbutamol: {cantidad: 50, lote: L-C-003, vence_en_dias: 220}
+      ceftriaxona: {cantidad: 70, lote: L-C-004, vence_en_dias: 300}
+      morfina: {cantidad: 25, lote: L-C-005, vence_en_dias: 400}
+    consumo_diario:
+      amoxicilina: 4
+      insulina: 2
+      salbutamol: 3
+      ceftriaxona: 3
+      morfina: 1
+
+proveedores:
+  P1:
+    nombre: Proveedor 1 (habitual)
+    tiempo_entrega_dias: 3
+    retraso_dias: 9
+    precios:
+      amoxicilina: 2.40
+      insulina: 17.50
+      salbutamol: 6.90
+      ceftriaxona: 3.95
+      morfina: 3.10
+  P2:
+    nombre: Proveedor 2 (alterno)
+    tiempo_entrega_dias: 5
+    retraso_dias: 0
+    precios:
+      amoxicilina: 2.60
+      insulina: 18.20
+      salbutamol: 7.40
+      ceftriaxona: 4.30
+      morfina: 3.45
