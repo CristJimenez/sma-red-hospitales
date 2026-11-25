@@ -9,6 +9,7 @@ Mesa 3.5.3 + capa FIPA-ACL propia. Entrega académica: 26 nov.
 
 ```powershell
 & "C:\Users\123cr\AppData\Local\Temp\opencode\venv-sma\Scripts\python.exe" -m sma.run
+& "C:\Users\123cr\AppData\Local\Temp\opencode\venv-sma\Scripts\python.exe" -m sma.diagrama
 & "C:\Users\123cr\AppData\Local\Temp\opencode\venv-sma\Scripts\python.exe" -m pytest
 & "C:\Users\123cr\AppData\Local\Temp\opencode\venv-sma\Scripts\python.exe" -m streamlit run app.py
 ```

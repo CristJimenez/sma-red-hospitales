@@ -6,7 +6,8 @@ agentes detectan, pronostican, coordinan un traslado desde otro hospital y
 completan la compra al proveedor alterno, mientras el Supervisor registra todo.
 
 El diagrama de secuencia **se genera desde la traza real** de la ejecución, no
-está dibujado a mano.
+está dibujado a mano. `out/s1_secuencia.mmd` y `Diagrama.drawio` salen de los
+mismos eventos; el segundo se regenera con `python -m sma.diagrama`.
 
 ## Qué demuestra
 
@@ -75,6 +76,7 @@ python -m venv .venv
 pip install -r requirements.txt
 
 python -m sma.run          # traza, métricas y verificación por consola
+python -m sma.diagrama     # regenera Diagrama.drawio desde la traza
 pytest                     # pruebas del escenario y ramas alternativas
 streamlit run app.py       # panel web
 ```
@@ -92,8 +94,8 @@ El panel permite:
 - Ver la traza por rondas y fases (A/B, C, D, E).
 - Consultar las 16 verificaciones del flujo base.
 - Comparar lo esperado con lo real en las variantes.
-- Ver el diagrama de secuencia generado y descargarlo.
 - Consultar la matriz completa de casos.
+- Descargar la traza y el diagrama de secuencia (`.mmd`).
 
 ## Cómo probarlo paso a paso
 
@@ -107,7 +109,7 @@ $py = "C:\Users\123cr\.venvs\sma-red-hospitales\Scripts\python.exe"
 # 2. Dependencias
 & $py -m pip install -r requirements.txt
 
-# 3. Pruebas automáticas -> debe decir "40 passed"
+# 3. Pruebas automáticas -> debe decir "41 passed"
 & $py -m pytest
 
 # 4. Escenario por consola -> debe mostrar 16 líneas [OK]
@@ -127,8 +129,8 @@ Qué mirar:
   orden `confirmada`, traslado `470`, compra `110` y presupuesto restante
   positivo.
 - En el panel, pestaña **Verificación**: 16/16 en verde.
-- Pestaña **Diagrama de secuencia**: se dibuja desde la traza. Descárgalo en
-  `.mmd` para el informe.
+- Pestaña **Traza**: métricas, decisión del Coordinador y descarga del diagrama
+  en `.mmd` para el informe. El dibujo completo está en `Diagrama.drawio`.
 - Selector **Variante**: elige `proveedores_retrasados` o `presupuesto_parcial`
   y mira cómo cambia la decisión, el riesgo residual y la traza.
 - Pestaña **Matriz de casos**: las 13 variantes con su decisión esperada.
@@ -153,6 +155,7 @@ config/variantes.yaml   matriz de "y si" como overrides del escenario base
 sma/acl.py              mensajes y performativas FIPA-ACL
 sma/bus.py              bus en proceso con entrega por rondas
 sma/trace.py            traza + exportación a Mermaid
+sma/diagrama.py         exportación de la traza a draw.io (Diagrama.drawio)
 sma/decision.py         planificador puro: traslado, compra, escalado
 sma/variantes.py        carga de variantes declarativas
 sma/domain/models.py    Lote, OrdenCompra, Proveedor, Hospital

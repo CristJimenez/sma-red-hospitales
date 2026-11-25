@@ -1,8 +1,8 @@
 """Panel web del SMA de abastecimiento hospitalario.
 
 Ejecuta cualquiera de las variantes del escenario y muestra la traza real, las
-métricas, la verificación y el diagrama de secuencia generado desde esa misma
-traza.
+métricas y la verificación. El diagrama de secuencia se exporta desde esa misma
+traza (`python -m sma.diagrama`), sin depender de servicios externos.
 """
 
 from __future__ import annotations
@@ -11,7 +11,6 @@ import json
 
 import pandas as pd
 import streamlit as st
-import streamlit.components.v1 as components
 
 from sma.run import ejecutar
 from sma.scenario.s1 import verificar
@@ -122,7 +121,7 @@ def tabla_eventos(eventos: list[dict]) -> pd.DataFrame:
 st.title("SMA de abastecimiento de medicamentos")
 st.caption(
     "Red de hospitales públicos · Mesa 3 + capa FIPA-ACL · "
-    "el diagrama de secuencia se genera desde la traza real."
+    "todos los datos salen de la traza real de la ejecución."
 )
 
 with st.sidebar:
@@ -170,9 +169,7 @@ else:
         f"riesgo residual {metricas['riesgo_residual']} uds."
     )
 
-pestanas = st.tabs(
-    ["Secuencia", "Verificación", "Matriz de casos", "Diagrama", "Traza"]
-)
+pestanas = st.tabs(["Secuencia", "Verificación", "Matriz de casos", "Traza"])
 
 with pestanas[0]:
     st.subheader("Rondas de comunicación")
@@ -240,25 +237,14 @@ with pestanas[2]:
     )
 
 with pestanas[3]:
-    st.subheader("Generado desde la traza")
+    st.subheader("Métricas")
+    st.json(metricas)
+    st.subheader("Decisión del Coordinador")
+    st.json(resultado["decision"] or {})
+    st.subheader("Descargas")
     st.caption(
-        "Este diagrama no está dibujado a mano: se produce a partir de los "
-        "mensajes realmente intercambiados."
-    )
-    components.html(
-        f"""
-        <pre class="mermaid" id="src"></pre>
-        <script type="module">
-          import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-          const origen = {json.dumps(resultado["mermaid"])};
-          const nodo = document.getElementById('src');
-          nodo.textContent = origen;
-          mermaid.initialize({{ startOnLoad: false, theme: 'default' }});
-          mermaid.run({{ nodes: [nodo] }});
-        </script>
-        """,
-        height=1200,
-        scrolling=True,
+        "El diagrama de secuencia sale de esta misma traza. `Diagrama.drawio` se "
+        "regenera con `python -m sma.diagrama`."
     )
     st.download_button(
         "Descargar diagrama (.mmd)",
@@ -266,12 +252,6 @@ with pestanas[3]:
         file_name=f"{nombre}_secuencia.mmd",
         mime="text/plain",
     )
-
-with pestanas[4]:
-    st.subheader("Métricas")
-    st.json(metricas)
-    st.subheader("Decisión del Coordinador")
-    st.json(resultado["decision"] or {})
     st.download_button(
         "Descargar traza completa (.json)",
         json.dumps({"eventos": resultado["eventos"]}, ensure_ascii=False, indent=2),
