@@ -8,7 +8,7 @@ cambia la guía.
 - **Stack:** Python 3.12 + Mesa 3.5.3 + capa FIPA-ACL propia + Streamlit.
 - **Demo:** <https://sma-red-hospitales-aawy4zv7fgovymwsyfkx74.streamlit.app/>
 - **Repositorio:** `CristJimenez/sma-red-hospitales` (rama `main`).
-- **Pruebas:** 65 (3 panel + 5 S1 + 23 S2 + 34 variantes).
+- **Pruebas:** 66 (3 panel + 6 S1 + 23 S2 + 34 variantes).
 
 ---
 
@@ -33,7 +33,7 @@ python -m venv C:\Users\123cr\.venvs\sma-red-hospitales
 $py = "C:\Users\123cr\.venvs\sma-red-hospitales\Scripts\python.exe"
 & $py -m pip install -r requirements.txt
 
-& $py -m pytest                      # 65 pruebas
+& $py -m pytest                      # 66 pruebas
 & $py -m sma.run                     # Situación 1 (16 pasos [OK])
 & $py -m sma.run --situacion 2       # Situación 2 (19 pasos [OK])
 & $py -m sma.run --listar            # las 13 variantes de S1
@@ -56,8 +56,9 @@ Salidas que genera `sma.run`:
 | `out/s2_traza.json` | traza completa de la S2 |
 | `out/s2_secuencia.mmd` | diagrama Mermaid de la S2 |
 
-`Diagrama.drawio` (S1) y `Diagrama2.drawio` (S2) son los dibujos del informe.
-El de la S1 se regenera desde la traza con `python -m sma.diagrama`.
+`Diagrama1.drawio` (S1) y `Diagrama2.drawio` (S2) son los dibujos del informe.
+La versión generada desde la traza se escribe en `out/s1_secuencia.drawio` con
+`python -m sma.diagrama`.
 
 ---
 
@@ -185,10 +186,10 @@ sma/agents/                 inventario, pronostico, coordinador, compras, superv
 sma/agents/s2/              inventario, pronostico, coordinador, supervisor
 sma/scenario/s1.py          16 comprobaciones de la S1
 sma/scenario/s2.py          19 comprobaciones de la S2
-sma/diagrama.py             traza S1 → Diagrama.drawio
+sma/diagrama.py             traza S1 → out/s1_secuencia.drawio
 sma/run.py                  CLI de ambas situaciones
 app.py                      panel Streamlit con selector
-tests/                      65 pruebas
+tests/                      66 pruebas
 ```
 
 **Flujo de una ronda** (`RedHospitalaria.step`):
@@ -532,16 +533,16 @@ mantenido a mano.
 Se ejecutan desde el panel y desde la consola (`python -m sma.run`). No son
 "tests aparte": son la misma función que usa la app.
 
-### 7.3 Pruebas (65)
+### 7.3 Pruebas (66)
 
 | Archivo | Qué cubre | Pruebas |
 |---|---|---|
-| `tests/test_s1.py` | flujo base, presupuesto, Compras caído, determinismo, Mermaid | 5 |
+| `tests/test_s1.py` | flujo base, presupuesto, Compras caído, determinismo, Mermaid y drawio | 6 |
 | `tests/test_s2.py` | flujo base, lote único en 7 variantes, determinismo, variantes, REFUSE, escalado, Mermaid, decisiones puras | 23 |
 | `tests/test_variantes.py` | las 13 variantes de S1 + funciones puras + inmutabilidad de la traza | 34 |
 | `tests/test_app.py` | el panel arranca, cambia de variante y cambia a S2 | 3 |
 
-Comando: `pytest` → **65 passed**.
+Comando: `pytest` → **66 passed**.
 
 ### 7.4 Determinismo
 

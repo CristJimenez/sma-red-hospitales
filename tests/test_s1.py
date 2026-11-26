@@ -1,6 +1,11 @@
 """Pruebas de la Situación 1 y de las ramas alternativas."""
 
+import re
+import xml.etree.ElementTree as ET
+
+from sma import diagrama
 from sma.config import cargar_config
+from sma.diagrama import generar
 from sma.run import ejecutar
 from sma.scenario.s1 import verificar
 
@@ -74,3 +79,43 @@ def test_diagrama_mermaid_se_genera_desde_la_traza() -> None:
         assert f"participant {alias} " in mermaid
     assert "traslado" in mermaid
     assert "INFORM" in mermaid
+
+
+def test_diagrama_drawio_coincide_con_la_traza() -> None:
+    """El .drawio de la S1 no se dibuja a mano: sale de los mismos eventos."""
+    modelo = ejecutar()
+    raiz = ET.fromstring(generar({"eventos": modelo.traza.eventos}))
+
+    etiquetas = [
+        celda.get("value") or ""
+        for celda in raiz.iter("mxCell")
+        if celda.get("edge") == "1"
+    ]
+    numeradas = [etiqueta for etiqueta in etiquetas if re.match(r"\[\d+\]", etiqueta)]
+
+    assert diagrama.SALIDA.name == "s1_secuencia.drawio"
+    assert len(numeradas) == 15
+    assert [
+        int(re.match(r"\[(\d+)\]", etiqueta).group(1))
+        for etiqueta in numeradas
+    ] == list(range(1, 16))
+
+    texto = " ".join(etiquetas)
+    for contenido in (
+        "informe_inventario",
+        "demanda_proyectada",
+        "excedentes",
+        "decision",
+        "retraso_proveedor",
+        "orden_generada",
+        "orden_confirmada",
+        "cierre",
+    ):
+        assert contenido in texto
+
+    cabeceras = [
+        celda.get("value") or ""
+        for celda in raiz.iter("mxCell")
+        if "rounded=1" in (celda.get("style") or "")
+    ]
+    assert len(cabeceras) == 9

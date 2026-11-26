@@ -10,11 +10,11 @@ Sistema multiagente con **dos situaciones** que se eligen desde el mismo panel:
   el Supervisor detecta el timeout y lo reinicia, y el Coordinador decide con la
   última estimación o con el historial de consumo.
 
-Los diagramas de secuencia **salen de la traza real** de cada ejecución, no
-están dibujados a mano. En la Situación 1, `out/s1_secuencia.mmd` y
-`Diagrama.drawio` se generan de los mismos eventos; el segundo se regenera con
-`python -m sma.diagrama`. En la Situación 2, `out/s2_secuencia.mmd` se descarga
-desde el panel y el dibujo del informe es `Diagrama2.drawio`.
+Los diagramas de secuencia **salen de la traza real** de cada ejecución. En la
+Situación 1, `out/s1_secuencia.mmd` y `out/s1_secuencia.drawio` se generan de los
+mismos eventos; el segundo se regenera con `python -m sma.diagrama`. El dibujo
+del informe es `Diagrama1.drawio`. En la Situación 2, `out/s2_secuencia.mmd` se
+descarga desde el panel y el dibujo del informe es `Diagrama2.drawio`.
 
 ## Qué demuestra
 
@@ -103,7 +103,7 @@ pip install -r requirements.txt
 
 python -m sma.run                    # Situación 1 por consola
 python -m sma.run --situacion 2      # Situación 2 por consola
-python -m sma.diagrama               # regenera Diagrama.drawio (S1)
+python -m sma.diagrama               # regenera out/s1_secuencia.drawio (S1)
 pytest                               # pruebas de ambas situaciones
 streamlit run app.py                 # panel web con selector
 ```
@@ -140,7 +140,7 @@ $py = "C:\Users\123cr\.venvs\sma-red-hospitales\Scripts\python.exe"
 # 2. Dependencias
 & $py -m pip install -r requirements.txt
 
-# 3. Pruebas automáticas -> debe decir "65 passed"
+# 3. Pruebas automáticas -> debe decir "66 passed"
 & $py -m pytest
 
 # 4. Situación 1 -> 16 líneas [OK]
@@ -169,7 +169,8 @@ Qué mirar:
   `H_B` en lista de espera, timeout detectado y reinicio `exitoso`.
 - En el panel, pestaña **Verificación**: 16/16 en S1 y 19/19 en S2.
 - Pestaña **Traza**: métricas, decisión del Coordinador y descarga del diagrama
-  en `.mmd`. Los dibujos completos son `Diagrama.drawio` y `Diagrama2.drawio`.
+  en `.mmd`. Los dibujos completos son `Diagrama1.drawio` y
+  `Diagrama2.drawio`.
 - Selector **Situación**: cambia a la S2 y prueba `s2_reinicio_falla` o
   `s2_sin_receptor` para ver el escalado.
 - Pestaña **Matriz de casos**: las 13 variantes de S1 o las 7 de S2.
@@ -198,7 +199,7 @@ config/variantes_s2.yaml   matriz de "y si" de la S2
 sma/acl.py                 mensajes y performativas FIPA-ACL
 sma/bus.py                 bus en proceso con entrega por rondas
 sma/trace.py               traza + exportación a Mermaid (participantes por escenario)
-sma/diagrama.py            exportación de la traza S1 a draw.io
+sma/diagrama.py            traza S1 → out/s1_secuencia.drawio
 sma/forecast.py            Holt + estacionalidad compartido por S1 y S2
 sma/decision.py            planificador puro de la S1
 sma/decision_s2.py         urgencia, prioridad y traslado del lote (S2)

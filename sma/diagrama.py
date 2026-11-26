@@ -5,6 +5,10 @@ una lista escrita a mano: cada mensaje ACL, cada auto-llamada y cada evento de
 entorno salen de la ejecución. Si cambia una regla, se vuelve a generar y el
 diagrama sigue cuadrando con la traza y con el Mermaid.
 
+Escribe `out/s1_secuencia.drawio` (artefacto generado). El dibujo del informe es
+`Diagrama1.drawio`, hecho a mano; este módulo no lo sobrescribe. Los mensajes ACL
+van numerados 1..15 en el mismo orden que el Mermaid de `sma/trace.py`.
+
 Uso:
     python -m sma.diagrama
 """
@@ -16,7 +20,7 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 TRAZA = RAIZ / "out" / "s1_traza.json"
-SALIDA = RAIZ / "Diagrama.drawio"
+SALIDA = RAIZ / "out" / "s1_secuencia.drawio"
 
 ANCHO_CAJA = 140
 ALTO_CAJA = 64
@@ -250,7 +254,11 @@ def items_desde_traza(eventos: list[dict]) -> list[dict]:
                 "stock, umbral, consumo, lotes por vencer",
                 estilo="ret",
             )
-            frag("start", "par")
+            frag(
+                "start",
+                "par",
+                "[misma ronda: Inventario y Pronóstico perciben en paralelo]",
+            )
         if orden == 18:
             frag("start", "alt", "[Compras acepta el REQUEST]")
         if orden == 22:
@@ -600,6 +608,7 @@ def generar(traza: dict) -> str:
 
 def main() -> None:
     traza = json.loads(TRAZA.read_text(encoding="utf-8"))
+    SALIDA.parent.mkdir(parents=True, exist_ok=True)
     SALIDA.write_text(generar(traza), encoding="utf-8")
     print(f"Diagrama generado: {SALIDA}")
 

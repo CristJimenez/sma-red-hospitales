@@ -53,7 +53,7 @@ El venv vive fuera de OneDrive a propósito. Para recrearlo:
 
 ## No romper
 
-- `pytest` debe quedar en verde (65 pruebas: flujos base, matrices de variantes,
+- `pytest` debe quedar en verde (66 pruebas: flujos base, matrices de variantes,
   determinismo, decisiones puras, Mermaid y panel de ambas situaciones).
 - La semilla fija debe producir siempre la misma traza.
 - La traza se copia al registrarse: un mensaje no puede cambiar después de
