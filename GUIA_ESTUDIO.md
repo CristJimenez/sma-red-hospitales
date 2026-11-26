@@ -161,57 +161,305 @@ parecerse a una conversación real.
 
 ---
 
-## 4. Arquitectura del código
+## 4. Arquitectura del código (mapa para estudiar)
+
+Esta sección es el mapa del repositorio: qué hace cada archivo, en qué orden
+leerlo y dónde tocar cuando quieras cambiar algo. Si solo tienes dos horas,
+lee **4.1**, **4.4** y **4.6**; con eso puedes defender el flujo completo.
+
+### 4.1 Las cinco capas
 
 ```
-config/s1.yaml              datos de la S1 (hospitales, stock, proveedores)
-config/variantes.yaml       13 "y si" de la S1
-config/s2.yaml              datos de la S2 (lote en riesgo, opciones)
-config/variantes_s2.yaml    7 "y si" de la S2
-
-sma/domain/models.py        Hospital, Lote, OrdenCompra, Proveedor, Configuracion
-sma/acl.py                  MensajeACL + performativas + protocolos
-sma/bus.py                  bus en proceso, entrega por rondas
-sma/trace.py                traza + exportación a Mermaid
-sma/forecast.py             Holt + estacionalidad (compartido S1/S2)
-sma/decision.py             reglas puras de la S1
-sma/decision_s2.py          reglas puras de la S2
-sma/config.py               carga s1.yaml + historial sintético
-sma/config_s2.py            carga s2.yaml
-sma/variantes.py            carga variantes S1
-sma/variantes_s2.py         carga variantes S2
-sma/model.py                RedHospitalaria (entorno Mesa S1)
-sma/model_s2.py             RedHospitalariaS2 (entorno Mesa S2)
-sma/agents/                 inventario, pronostico, coordinador, compras, supervisor
-sma/agents/s2/              inventario, pronostico, coordinador, supervisor
-sma/scenario/s1.py          16 comprobaciones de la S1
-sma/scenario/s2.py          19 comprobaciones de la S2
-sma/diagrama.py             traza S1 → out/s1_secuencia.drawio
-sma/run.py                  CLI de ambas situaciones
-app.py                      panel Streamlit con selector
-tests/                      66 pruebas
+config/*.yaml            DATOS      hospitales, stock, precios, variantes
+sma/domain/models.py     DOMINIO    Hospital, Lote, Proveedor, OrdenCompra
+sma/decision*.py         REGLAS     funciones puras: estado → plan
+sma/agents/*.py          ROLES      perciben, aplican el plan y hablan FIPA
+sma/model*.py + bus.py   ENTORNO    rondas Mesa, entrega diferida, acciones
+sma/trace.py             EVIDENCIA  todo queda registrado para el informe
+app.py / sma/run.py      INTERFAZ   panel Streamlit y consola
 ```
 
-**Flujo de una ronda** (`RedHospitalaria.step`):
+Regla de dependencias: **cada capa solo importa hacia abajo**. `decision.py` no
+conoce agentes ni mensajes; `trace.py` no conoce el modelo; `domain/models.py`
+no importa nada del proyecto. Si aparece un import "hacia arriba", es un error
+de diseño, no una optimización.
 
-1. `ronda += 1`.
-2. El bus entrega los mensajes pendientes y los reparte a los buzones.
-3. `agents.do("step")` activa a cada agente en orden de creación.
-4. Cada agente procesa su buzón y, si toca, envía mensajes (que se entregarán
-   en la ronda siguiente) y registra acciones en la traza.
+### 4.2 Ruta de lectura en 9 pasos
 
-**Orden de activación** (no se debe alterar sin revisar el escenario):
+No leas los archivos en orden alfabético: se entiende mejor de los datos hacia
+la interfaz.
 
-- S1: `inventario → pronostico → coordinador → compras → supervisor`
-- S2: `inventario → pronostico → coordinador → supervisor`
+| Paso | Lee | Pregunta que responde | ~Tiempo |
+|---|---|---|---|
+| 1 | `config/s1.yaml` + `config/variantes.yaml` | ¿con qué datos juega la S1 y qué casos existen? | 15 min |
+| 2 | `sma/domain/models.py` | ¿qué es un lote, un umbral, un excedente, un plazo efectivo? | 20 min |
+| 3 | `sma/acl.py` + `sma/bus.py` | ¿qué es un mensaje y cuándo se entrega? | 15 min |
+| 4 | `sma/model.py` (`__init__`, `step`, `trasladar`, `crear_orden`) | ¿quién activa a los agentes y cómo cambia el entorno? | 20 min |
+| 5 | `sma/agents/base.py` + `sma/agents/inventario.py` | ¿cómo es un agente por dentro? | 15 min |
+| 6 | `sma/decision.py` + `sma/agents/coordinador.py` | ¿dónde está el "cerebro" de la S1? | 40 min |
+| 7 | `sma/agents/compras.py` + `pronostico.py` + `supervisor.py` | ¿quién compra, quién proyecta y quién vigila? | 30 min |
+| 8 | `sma/trace.py` + `sma/scenario/s1.py` | ¿cómo se convierte la ejecución en evidencia? | 20 min |
+| 9 | `config/s2.yaml` → `model_s2.py` → `decision_s2.py` → `agents/s2/` | ¿qué cambia en la S2? | 60 min |
 
-**Dos capas de decisión separadas**:
+Total: unas 4 horas. El día de la defensa basta con releer **4.6** y el
+**checklist 4.10**.
 
-- `sma/decision*.py`: funciones **puras** (sin agentes, sin mensajes, sin
-  reloj). Entra estado, sale plan. Se prueban sin simular.
-- `sma/agents/*`: solo aplican el plan y hablan FIPA.
+### 4.3 Archivo por archivo: qué es cada cosa
 
-Esa separación es lo que permite tener 20 variantes sin duplicar escenarios.
+**Datos** (aquí no hay lógica; cambiar un número cambia la simulación):
+
+| Archivo | Qué contiene |
+|---|---|
+| `config/s1.yaml` | Escenario S1 completo: semilla, presupuesto, 5 medicamentos, 3 hospitales con inventario y consumo, 2 proveedores, evento de brote y opciones. |
+| `config/variantes.yaml` | Las 13 variantes de S1: `overrides` sobre `s1.yaml` + `esperado` (lo que el test debe ver). |
+| `config/s2.yaml` | Escenario S2: lote en riesgo, umbral de vencimiento, caída y reinicio del Pronóstico, rechazos de traslado. |
+| `config/variantes_s2.yaml` | Las 7 variantes de S2, con la misma estructura. |
+
+**Dominio** — `sma/domain/models.py`:
+
+- `Medicamento`: crítico, cadena de frío, precio de referencia, vida útil.
+- `Lote`: cantidad, vencimiento y hospital dueño; `a_dict()` para la traza.
+- `Hospital`: `stock()`, `umbral()`, `consumo_efectivo()`,
+  `dias_hasta_agotamiento()`, `excedente()`, `lotes_proximos_a_vencer()`,
+  `retirar()` y `agregar()`. Aquí viven las fórmulas del informe.
+- `Proveedor`: `precio()`, `plazo_efectivo()` = entrega + retraso.
+- `OrdenCompra`: `OC-001`, cantidad, proveedor, coste y estado.
+- `Evento`, `Opciones`, `Configuracion`: el resto de `s1.yaml` ya tipado.
+
+**Comunicación**:
+
+| Archivo | Qué hay dentro |
+|---|---|
+| `sma/acl.py` | Constantes `INFORM`, `REQUEST`, `AGREE`, `REFUSE`, `FAILURE`, `QUERY_REF`, `QUERY_IF`; protocolos `fipa-*`; `MensajeACL` con `resumen()` y `a_dict()`. |
+| `sma/bus.py` | `enviar()` asigna `seq` y `ronda`, guarda en `pendientes` y registra en la traza; `entregar()` devuelve la lista y la vacía. **Toda la entrega diferida cabe en 33 líneas.** |
+
+**Decisión pura** (sin agentes, sin mensajes, sin reloj):
+
+| Archivo | Qué hay dentro |
+|---|---|
+| `sma/decision.py` | `Donante`, `Oferta`, `Plan`; `_motivo_descarte()`, `seleccionar_traslado()`, `decidir_accion()`, `elegir_proveedor()`, `planificar()`. Constantes: margen 1 día, vida mínima 2 días, penalización 0.5 €/día. |
+| `sma/decision_s2.py` | `Urgencia`, `PlanTraslado`; `demanda_sustituta()`, `calcular_urgencias()`, `elegir_hospital_prioritario()`, `planificar_traslado()`, `hospital_alterno()`. |
+| `sma/forecast.py` | `holt()`, `factores_estacionales()`, `mape()`, `proyectar()`. Lo comparten S1 y S2. |
+
+**Entorno y carga**:
+
+| Archivo | Qué hay dentro |
+|---|---|
+| `sma/model.py` | `RedHospitalaria(mesa.Model)`: crea los 5 agentes (el orden importa), `step()`, `factor_brote()`, `trasladar()`, `crear_orden()`, `gastar()` y `metricas()`. |
+| `sma/model_s2.py` | `RedHospitalariaS2`: 4 agentes, `asignar_lote()` (mueve el mismo objeto `Lote`) y `metricas()` de la S2. |
+| `sma/config.py` | `cargar_config()`: lee YAML, construye objetos y genera el historial sintético reproducible (`_generar_historial`). `_fusionar()` aplica los overrides. |
+| `sma/config_s2.py` | `ConfiguracionS2`, `OpcionesS2` y `cargar_config_s2()`. |
+| `sma/variantes.py` | `Variante` (título, descripción, `esperado`, `overrides`), `listar_variantes()`, `cargar_variante()`. |
+| `sma/variantes_s2.py` | Lo mismo para la S2. |
+
+**Agentes de la S1** (`sma/agents/`):
+
+| Archivo | Qué hace |
+|---|---|
+| `base.py` | `AgenteBase`: `step()` vacía el buzón y llama a `procesar()`; `enviar()` crea el `MensajeACL` y lo pasa al bus; `accion()` registra en la traza. |
+| `inventario.py` | `_detectar_riesgos()` compara stock con umbral y avisa; `_responder_excedentes()` calcula quién puede ceder y cuánto. |
+| `pronostico.py` | `_holt()`, `_factores_estacionales()`, `_mape()` y `_pronosticar_evento()`: proyecta la demanda y reporta el error. |
+| `coordinador.py` | El rol más grande: `_procesar_inform()`, `_consultar_excedentes()`, `_decidir()`, `_solicitar_compra()`, `_pedir_compra_alterna()`, `_intentar_emergencia()`, `_escalar()`, `_solicitar_confirmacion()`, `_cerrar()` y `_manejar_failure()`. |
+| `compras.py` | `_gestionar_compra()` responde `AGREE`/`FAILURE` y alerta el retraso; `_comprar()` crea la orden y gasta; `_confirmar()` responde al `QUERY-IF`. |
+| `supervisor.py` | Registra los `INFORM` de su lista `EVENTOS`, detecta "sin riesgo" y genera el reporte de cierre. |
+
+**Agentes de la S2** (`sma/agents/s2/`):
+
+| Archivo | Qué hace |
+|---|---|
+| `inventario.py` | `_detectar_vencimiento()`, `_responder_stock()` y `_preparar_traslado()` (acepta o rechaza según `rechazos_traslado`). |
+| `pronostico.py` | `_proyectar()`, `_estimar_previa()`, `_responder_demanda()`; si está caído no responde, y `_responder_reinicio()` / `_completar_reinicio()` lo recuperan. |
+| `coordinador.py` | `_analizar()` (pide demanda), `_usar_sustituto()` (timeout), `_consultar_stock()`, `_decidir()`, `_solicitar_traslado()`, `_reasignar()` (tras `REFUSE`), `_cerrar()` y `_escalar()`. |
+| `supervisor.py` | `_verificar_timeout()` (la condición está aquí), `_procesar_failure()`, `_reporte_incidente()` y `_generar_reporte()`. |
+
+**Evidencia y verificación**:
+
+| Archivo | Qué hace |
+|---|---|
+| `sma/trace.py` | `Traza`: `registrar_mensaje()`, `registrar_accion()`, `registrar_entorno()`, consultas (`mensajes()`, `buscar()`, `acciones()`, `entorno()`) y `a_mermaid()`. Define participantes y alias de S1 y S2. |
+| `sma/scenario/s1.py` | `verificar()`: 16 comprobaciones numeradas del enunciado de la S1. |
+| `sma/scenario/s2.py` | `verificar_s2()`: 19 comprobaciones de la S2. |
+
+**Interfaces**:
+
+| Archivo | Qué hace |
+|---|---|
+| `sma/run.py` | `ejecutar()`, `ejecutar_variante()`, `ejecutar_s2()`, `imprimir_timeline()`, `_guardar()` y el CLI (`--situacion`, `--variante`, `--listar`, `--rondas`, `--salida`). |
+| `app.py` | `_importar_sma()` (recarga limpia en Streamlit), `correr_s1()` / `correr_s2()` con caché, tablas y descargas. |
+| `sma/diagrama.py` | `items_desde_traza()`, `generar()` y `main()`: escribe `out/s1_secuencia.drawio` desde la traza. No toca `Diagrama1.drawio`. |
+
+**Pruebas**:
+
+| Archivo | Qué demuestra |
+|---|---|
+| `tests/test_s1.py` | Flujo base, presupuesto insuficiente, Compras caído, determinismo, Mermaid y drawio generado (6). |
+| `tests/test_s2.py` | Flujo base, lote único en las 7 variantes, determinismo, `REFUSE`, escalado, Mermaid y decisiones puras (23). |
+| `tests/test_variantes.py` | Las 13 variantes de S1 de extremo a extremo, la matriz pura y la inmutabilidad de la traza (34). |
+| `tests/test_app.py` | El panel arranca, ejecuta una variante y cambia a S2 (3). |
+
+### 4.4 El ciclo de una ronda, con el código delante
+
+```python
+# sma/model.py · RedHospitalaria.step
+self.ronda += 1
+for mensaje in self.bus.entregar():        # lo enviado en la ronda anterior
+    agente = self.por_nombre.get(mensaje.receptor)
+    agente.buzon.append(mensaje)           # se reparte a los buzones
+self.agents.do("step")                     # uno por uno, en orden de creación
+
+# sma/agents/base.py · AgenteBase.step
+self.model.latidos[self.nombre] = self.model.ronda
+mensajes, self.buzon = self.buzon, []      # vaciar antes de procesar
+self.procesar(mensajes)                    # aquí vive la lógica del rol
+```
+
+Consecuencias que hay que poder explicar:
+
+1. **No hay concurrencia real**: los agentes se activan en serie.
+2. **La entrega es diferida**: enviar en N significa procesar en N+1.
+3. **El orden de creación es el orden de activación**. En S1:
+   `inventario → pronostico → coordinador → compras → supervisor`. En S2:
+   `inventario → pronostico → coordinador → supervisor`.
+4. **`latidos`** guarda la última ronda en que se activó cada agente (hoy solo
+   se escribe; es el punto de enganche para monitorización).
+5. La simulación para cuando `modelo.cierre` y `supervisor.reporte` existen;
+   `max_rondas` es solo un tope de seguridad.
+
+### 4.5 Anatomía de un agente
+
+Todos los agentes hacen como máximo cuatro cosas:
+
+1. **Percibir**: leen su buzón en `procesar(mensajes)`.
+2. **Consultar el entorno**: `self.model.config...`, `self.model.ronda` y los
+   lotes de los hospitales (solo lectura).
+3. **Actuar sobre el entorno**: llaman a métodos del modelo
+   (`trasladar`, `crear_orden`, `asignar_lote`).
+4. **Comunicar y dejar evidencia**: `self.enviar(...)` y `self.accion(...)`.
+
+Un agente **no** debe tocar las variables de otro agente ni saltarse el bus.
+Si dos agentes necesitan hablarse, se manda un `MensajeACL`. Esa disciplina es
+lo que hace que la traza sea fiable.
+
+Ejemplo mínimo (`inventario.py`):
+
+```python
+if stock <= umbral or dias <= stock_seguridad:
+    evento = {"tipo": "riesgo_desabastecimiento", "hospital": ..., ...}
+    self.accion("generarEventoRiesgo", evento)   # queda en la traza
+    self.enviar(INFORM, "coordinador", evento)   # sale por el bus
+```
+
+### 4.6 Un mensaje de punta a punta
+
+Sigamos el primer `INFORM` de la S1 (`riesgo_desabastecimiento`). Es el mejor
+ejemplo para explicar el sistema en la defensa:
+
+1. `inventario._detectar_riesgos()` recorre hospitales y medicamentos y
+   construye el diccionario del riesgo con las fórmulas de `Hospital`.
+2. `AgenteBase.enviar()` crea el `MensajeACL` con emisor, receptor, contenido y
+   protocolo.
+3. `Bus.enviar()` le asigna `seq` y `ronda`, lo guarda en `pendientes` y llama a
+   `traza.registrar_mensaje()`.
+4. En la ronda siguiente, `RedHospitalaria.step()` llama a `bus.entregar()` y
+   mete el mensaje en el buzón del Coordinador.
+5. `coordinador.procesar()` ve un `INFORM` y llama a `_procesar_inform()`.
+6. `_procesar_inform()` reconoce `tipo == "riesgo_desabastecimiento"` y llama a
+   `_registrar_riesgo()`.
+7. Cuando tiene riesgo **y** proyección, `_consultar_excedentes()` envía un
+   `QUERY-REF` al Inventario (ronda 2).
+8. `inventario._responder_excedentes()` contesta con `INFORM excedentes`
+   (ronda 3).
+9. Con los excedentes, `coordinador._decidir()` llama a `decision.planificar()`,
+   ejecuta `model.trasladar()` y envía `REQUEST` a Compras.
+10. Compras responde `AGREE`, alerta el retraso de P1 y el Coordinador pide P2;
+    la orden se confirma con `QUERY-IF` → `INFORM`; el Supervisor cierra.
+
+Cada paso deja un evento en `out/s1_traza.json`; el Mermaid y el drawio
+generado se construyen recorriendo exactamente esos eventos.
+
+### 4.7 ¿Dónde toco si quiero…?
+
+| Quiero… | Voy a… | Lo comprueba… |
+|---|---|---|
+| cambiar stock, consumo o precios | `config/s1.yaml` o `config/s2.yaml` | `pytest` y `sma.run` |
+| añadir un hospital | `config/s1.yaml → hospitales` (con `inventario` y `consumo_diario`) | no hay que tocar código |
+| añadir un medicamento | `medicamentos` + `inventario` + `consumo_diario` | catálogo abierto; aparece en todo el sistema |
+| añadir un "y si" | `config/variantes.yaml`: `overrides` + `esperado` | `test_variante_cumple_lo_esperado` |
+| cambiar qué proveedor gana | `sma/decision.py → elegir_proveedor()` | `tests/test_variantes.py` |
+| cambiar la prioridad de la S2 | `sma/decision_s2.py → elegir_hospital_prioritario()` | `tests/test_s2.py` |
+| cambiar el orden de activación | `sma/model.py → __init__` | **revisar todo el escenario**: cambian las rondas |
+| añadir o cambiar un mensaje | el agente correspondiente + `sma/scenario/s1.py` | el check numerado falla si desaparece |
+| cambiar el diagrama Mermaid | `sma/trace.py → a_mermaid()` | `test_diagrama_mermaid...` |
+| añadir una pestaña al panel | `app.py` | `tests/test_app.py` |
+
+### 4.8 Cómo leer una traza sin perderse
+
+La traza es una lista de eventos con tres tipos:
+
+| `tipo` | Campos | Significado |
+|---|---|---|
+| `mensaje` | `ronda`, `performativa`, `emisor`, `receptor`, `contenido`, `protocolo` | un ACL enviado |
+| `accion` | `ronda`, `agente`, `accion`, `detalle` | algo que hizo un agente (auto-llamada) |
+| `entorno` | `ronda`, `accion`, `detalle`, `origen`, `destino` | un cambio real en el mundo (traslado, orden) |
+
+Para verla sin abrir el JSON entero:
+
+```powershell
+& $py -m sma.run | Select-String "riesgo|REQUEST|AGREE|cierre"
+```
+
+O con Python, filtrando solo los mensajes:
+
+```python
+import json
+eventos = json.load(open("out/s1_traza.json", encoding="utf-8"))["eventos"]
+for e in eventos:
+    if e["tipo"] == "mensaje":
+        print(e["ronda"], e["emisor"], "->", e["receptor"],
+              e["performativa"], e["contenido"].get("tipo"))
+```
+
+Truco para estudiar: ejecuta la S1 y la S2, abre los dos `.mmd` y compara. En la
+S1 verás `COMP`, `P1`, `P2` y `OC`; en la S2 verás `LOTE` y ningún proveedor.
+Eso demuestra que son **dos organizaciones distintas**, no la misma con un
+agente de más.
+
+### 4.9 Convenciones y trampas del código
+
+- Los identificadores están en español; las constantes FIPA, en mayúsculas.
+- El atributo `nombre` de un agente es a la vez la clave del buzón, el `emisor`
+  del ACL y la clave de alias de la traza. Cambiarlo rompe los mensajes.
+- **No "arregles" la entrega diferida**: es lo que hace determinista el orden y
+  explica las rondas del diagrama.
+- `AgenteBase.step()` vacía el buzón antes de procesar. Si guardas una
+  referencia a la lista, ya no es la del agente.
+- La traza copia con `deepcopy`: un mensaje no puede cambiar después de
+  enviarse.
+- `ronda_inicio` dispara la detección del Inventario y el pronóstico; no
+  asumas que siempre es la ronda 1.
+- En S2, `asignar_lote()` mueve el **mismo objeto** `Lote` de una lista a otra:
+  nunca se copia ni se reparte.
+- Los tests no usan mocks: ejecutan el modelo real con semilla fija y comparan
+  la traza.
+
+### 4.10 Checklist: ¿ya entiendes el código?
+
+Si fallas una pregunta, vuelve al archivo indicado.
+
+| Pregunta | Respuesta corta | Archivo |
+|---|---|---|
+| ¿Quién crea a los agentes y en qué orden? | `RedHospitalaria.__init__`; el orden de creación es el de activación | `sma/model.py` |
+| ¿Dónde espera un mensaje antes de entregarse? | en `Bus.pendientes`; se entrega al inicio de la ronda siguiente | `sma/bus.py` |
+| ¿Por qué el Coordinador decide en la ronda 4? | necesita la proyección (r1→r2) y los excedentes (r2→r3) | `sma/agents/coordinador.py` |
+| ¿Qué diferencia hay entre `accion` y `entorno`? | `accion` es una auto-llamada del agente; `entorno` cambia el mundo | `sma/trace.py` |
+| ¿Quién elige al proveedor y con qué criterio? | `elegir_proveedor()`: mínimo `precio + 0.5 × plazo` entre los viables | `sma/decision.py` |
+| ¿Dónde está la regla de que el lote no se reparte? | `planificar_traslado()` asigna el lote completo a uno solo | `sma/decision_s2.py` |
+| ¿Quién detecta el timeout y con qué condición? | el Supervisor, si `ronda > ronda_consulta` y no hubo respuesta | `sma/agents/s2/supervisor.py` |
+| ¿Qué pasa si el Pronóstico no dejó estimación? | se usa `media(historial) × horizonte` | `sma/decision_s2.py` |
+| ¿Cómo se añade una variante sin tocar Python? | una entrada en el YAML con `overrides` y `esperado` | `config/variantes*.yaml` |
+| ¿Qué se genera y qué se dibuja a mano? | Mermaid y `out/s1_secuencia.drawio` se generan; `Diagrama1/2.drawio` son del informe | `sma/trace.py`, `sma/diagrama.py` |
+| ¿Qué aporta `scenario/s1.py` frente a un test? | son las mismas comprobaciones que muestra el panel, no solo pytest | `sma/scenario/s1.py` |
+| ¿Qué habría que cambiar para usar XMPP? | solo el adaptador del bus; los agentes no cambian | `sma/bus.py` |
 
 ---
 
@@ -517,11 +765,14 @@ en que ocurre** y se copia (`deepcopy`). Un mensaje no puede cambiar después de
 enviarse. El Mermaid se genera recorriendo esos eventos:
 
 ```
-traza real → a_mermaid() → out/*.mmd → diagrama del informe
+traza real → a_mermaid() → out/*.mmd
+traza real → sma/diagrama.py → out/s1_secuencia.drawio
 ```
 
-Por eso el dibujo y la ejecución **no pueden divergir**: no hay un diagrama
-mantenido a mano.
+Por eso el `.mmd` y el `.drawio` generado **no pueden divergir** de la
+ejecución: se construyen recorriendo los eventos. Los dibujos del informe
+(`Diagrama1.drawio` y `Diagrama2.drawio`) son la versión legible de esa misma
+secuencia y se revisan contra la traza y las comprobaciones de `sma/scenario/*`.
 
 ### 7.2 Verificación paso a paso
 
@@ -658,8 +909,9 @@ Se usa la media del historial de consumo multiplicada por el horizonte
 (variante `s2_sin_estimacion`).
 
 **¿Por qué el diagrama no puede estar mal?**
-Porque se genera desde la traza. Si el código cambia, el `.mmd` cambia. Los
-dibujos `.drawio` del informe se contrastan con esa traza y las comprobaciones de
+El `.mmd` y `out/s1_secuencia.drawio` se generan desde la traza: si el código
+cambia, cambian solos. Los dibujos del informe (`Diagrama1.drawio` y
+`Diagrama2.drawio`) se contrastan con esa traza, y las comprobaciones de
 `sma/scenario/*` fallan si un paso deja de ocurrir.
 
 **¿Por qué 11 rondas en S1 y 9 en S2?**
