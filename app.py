@@ -7,16 +7,63 @@ muestra sale de la traza real; el diagrama Mermaid se descarga desde ella.
 
 from __future__ import annotations
 
+import importlib
 import json
+import sys
 
 import pandas as pd
 import streamlit as st
 
-from sma.run import ejecutar, ejecutar_s2
-from sma.scenario.s1 import verificar
-from sma.scenario.s2 import verificar_s2
-from sma.variantes import cargar_variante, listar_variantes
-from sma.variantes_s2 import cargar_variante_s2, listar_variantes_s2
+
+def _importar_sma() -> dict[str, object]:
+    """Importa el paquete ``sma`` descartando copias viejas en memoria.
+
+    Streamlit recarga ``app.py`` en caliente al desplegar y conserva en
+    ``sys.modules`` la versión anterior del paquete. Si el archivo nuevo pide
+    símbolos que el módulo viejo no tiene, hay que limpiar y releer del disco.
+    """
+    modulos = {
+        "sma.run": ("ejecutar", "ejecutar_s2"),
+        "sma.scenario.s1": ("verificar",),
+        "sma.scenario.s2": ("verificar_s2",),
+        "sma.variantes": ("cargar_variante", "listar_variantes"),
+        "sma.variantes_s2": ("cargar_variante_s2", "listar_variantes_s2"),
+    }
+
+    def cargar() -> dict[str, object]:
+        return {
+            nombre: importlib.import_module(nombre) for nombre in modulos
+        }
+
+    def completo(cargados: dict[str, object]) -> bool:
+        return all(
+            hasattr(cargados[nombre], atributo)
+            for nombre, atributos in modulos.items()
+            for atributo in atributos
+        )
+
+    cargados = cargar()
+    if not completo(cargados):
+        for clave in [m for m in list(sys.modules) if m == "sma" or m.startswith("sma.")]:
+            del sys.modules[clave]
+        cargados = cargar()
+    return cargados
+
+
+_modulos = _importar_sma()
+_run = _modulos["sma.run"]
+_s1 = _modulos["sma.scenario.s1"]
+_s2 = _modulos["sma.scenario.s2"]
+_v1 = _modulos["sma.variantes"]
+_v2 = _modulos["sma.variantes_s2"]
+
+ejecutar, ejecutar_s2 = _run.ejecutar, _run.ejecutar_s2
+verificar, verificar_s2 = _s1.verificar, _s2.verificar_s2
+cargar_variante, listar_variantes = _v1.cargar_variante, _v1.listar_variantes
+cargar_variante_s2, listar_variantes_s2 = (
+    _v2.cargar_variante_s2,
+    _v2.listar_variantes_s2,
+)
 
 st.set_page_config(
     page_title="SMA Red de Hospitales",
