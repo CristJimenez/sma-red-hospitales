@@ -1,0 +1,312 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.9 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="26.0.9">
+  <diagram name="Página-1" id="4FTvw5LsTeRjvj9zEn58">
+    <mxGraphModel dx="1400" dy="715" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-1" value="«agent»&#xa;AgenteInventario" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" parent="1" vertex="1">
+          <mxGeometry x="20" y="20" width="150" height="2630" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-2" value="" style="points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0}" parent="Npk_r9rgoqYKzlW3nsoz-1" vertex="1">
+          <mxGeometry x="70" width="10" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-3" value="" style="points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0}" parent="Npk_r9rgoqYKzlW3nsoz-1" vertex="1">
+          <mxGeometry x="70" y="1852" width="10" height="192" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-4" value="" style="points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0}" parent="Npk_r9rgoqYKzlW3nsoz-1" vertex="1">
+          <mxGeometry x="70" y="2147" width="10" height="119" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-5" value="" style="points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0}" parent="Npk_r9rgoqYKzlW3nsoz-1" vertex="1">
+          <mxGeometry x="70" y="2442" width="10" height="73" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-6" value="«agent»&#xa;AgenteCoordinador" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" parent="1" vertex="1">
+          <mxGeometry x="411" y="20" width="161" height="2630" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-7" value="" style="points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0}" parent="Npk_r9rgoqYKzlW3nsoz-6" vertex="1">
+          <mxGeometry x="75" y="231" width="10" height="2294" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-8" value="«agent»&#xa;AgentePronostico" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" parent="1" vertex="1">
+          <mxGeometry x="802" y="20" width="150" height="2630" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-9" value="" style="points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0}" parent="Npk_r9rgoqYKzlW3nsoz-8" vertex="1">
+          <mxGeometry x="70" y="304" width="10" height="222" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-10" value="" style="points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0}" parent="Npk_r9rgoqYKzlW3nsoz-8" vertex="1">
+          <mxGeometry x="70" y="924" width="10" height="296" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-11" value="" style="points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0}" parent="Npk_r9rgoqYKzlW3nsoz-8" vertex="1">
+          <mxGeometry x="70" y="1322" width="10" height="118" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-12" value="«agent»&#xa;AgenteSupervisor" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" parent="1" vertex="1">
+          <mxGeometry x="1142" y="20" width="150" height="2630" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-13" value="" style="points=[];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0}" parent="Npk_r9rgoqYKzlW3nsoz-12" vertex="1">
+          <mxGeometry x="70" y="526" width="10" height="1130" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-14" value="alt" style="shape=umlFrame;dashed=1;pointerEvents=0;dropTarget=0;strokeColor=#000000;height=20;width=30" parent="1" vertex="1">
+          <mxGeometry x="759" y="964" width="611" height="732" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-15" value="[Reinicio exitoso]" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;" parent="Npk_r9rgoqYKzlW3nsoz-14" vertex="1">
+          <mxGeometry x="30" width="581" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-16" value="[Fallo al reiniciar]" style="shape=line;dashed=1;whiteSpace=wrap;verticalAlign=top;labelPosition=center;verticalLabelPosition=middle;align=center;strokeColor=#000000;" parent="Npk_r9rgoqYKzlW3nsoz-14" vertex="1">
+          <mxGeometry y="403" width="611" height="4" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-17" value="alt" style="shape=umlFrame;dashed=1;pointerEvents=0;dropTarget=0;strokeColor=#000000;height=20;width=30" parent="1" vertex="1">
+          <mxGeometry x="360" y="350" width="1026" height="1362" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-18" value="[AgentePronostico responde a tiempo]" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;" parent="Npk_r9rgoqYKzlW3nsoz-17" vertex="1">
+          <mxGeometry x="30" width="996" height="30.000000000000004" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-19" value="[Timeout / AgentePronostico deja de responder]" style="shape=line;dashed=1;whiteSpace=wrap;verticalAlign=top;labelPosition=center;verticalLabelPosition=middle;align=center;strokeColor=#B3B3B3;" parent="Npk_r9rgoqYKzlW3nsoz-17" vertex="1">
+          <mxGeometry y="227.00000000000003" width="1026" height="4.000000000000001" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-20" value="alt" style="shape=umlFrame;dashed=1;pointerEvents=0;dropTarget=0;strokeColor=#000000;height=20;width=30" parent="1" vertex="1">
+          <mxGeometry x="60" y="1892" width="576" height="663" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-21" value="[Traslado viable]" style="text;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;" parent="Npk_r9rgoqYKzlW3nsoz-20" vertex="1">
+          <mxGeometry x="30" width="546" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-22" value="[Traslado rechazado]" style="shape=line;dashed=1;whiteSpace=wrap;verticalAlign=top;labelPosition=center;verticalLabelPosition=middle;align=center;strokeColor=#000000;" parent="Npk_r9rgoqYKzlW3nsoz-20" vertex="1">
+          <mxGeometry y="300" width="576" height="4" as="geometry" />
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-23" value="1: Revisa caducidad y detecta lote en C&#xa;[leerRegistros(), compararUmbral()]" style="curved=1;endArrow=block;rounded=0;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-1" target="Npk_r9rgoqYKzlW3nsoz-1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="150" y="148" />
+              <mxPoint x="150" y="178" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-24" value="2: riesgo_de_vencimiento_en_C(cantidad, fecha)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-1" target="Npk_r9rgoqYKzlW3nsoz-7" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="304" y="251" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-25" value="3: demanda_proyectada_hospitales_A_B" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=horizontal;curved=0;rounded=0;endArrow=block;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-7" target="Npk_r9rgoqYKzlW3nsoz-9" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="695" y="324" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-26" value="4A: Calcula proyección de consumo&#xa;[calcularProyeccion()]" style="curved=1;endArrow=block;rounded=0;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-9" target="Npk_r9rgoqYKzlW3nsoz-9" edge="1">
+          <mxGeometry x="-0.1158" y="48" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="932" y="443" />
+              <mxPoint x="932" y="473" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-27" value="4B: demanda_estimada_A_B" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-9" target="Npk_r9rgoqYKzlW3nsoz-7" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="696" y="546" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-28" value=" 10: detectar_timeout_agente_pronostico&#xa;[registrarEvento()]" style="curved=1;endArrow=block;rounded=0;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-13" target="Npk_r9rgoqYKzlW3nsoz-13" edge="1">
+          <mxGeometry x="-0.1538" y="58" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1272" y="665" />
+              <mxPoint x="1272" y="695" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-29" value="11A: fallo_agente_pronostico" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-13" target="Npk_r9rgoqYKzlW3nsoz-7" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="866" y="768" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-30" value="11B: Usa última estimación o historial&#xa;de consumo y deja registro" style="curved=1;endArrow=block;rounded=0;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-7" target="Npk_r9rgoqYKzlW3nsoz-7" edge="1">
+          <mxGeometry x="-0.0923" y="64" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="546" y="841" />
+              <mxPoint x="546" y="871" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-31" value="1&#xa;12: solicitar_reinicio_recuperacion" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-13" target="Npk_r9rgoqYKzlW3nsoz-10" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1057" y="944" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-32" value="13A: (Acepta iniciar reinicio)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-10" target="Npk_r9rgoqYKzlW3nsoz-13" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1056" y="1063" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-33" value="13B: Corrige error de predicción&#xa;[actualizarModelo()]" style="curved=1;endArrow=block;rounded=0;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-10" target="Npk_r9rgoqYKzlW3nsoz-10" edge="1">
+          <mxGeometry x="-0.2308" y="48" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="932" y="1136" />
+              <mxPoint x="932" y="1166" />
+            </Array>
+            <mxPoint x="49" y="42" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-34" value="13C: reinicio_completado_modelo_actualizado" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-8" target="Npk_r9rgoqYKzlW3nsoz-13" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1056" y="1239" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-35" value="14A: Guarda reporte del incidente&#xa;[generarReporte()]" style="curved=1;endArrow=block;rounded=0;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-13" target="Npk_r9rgoqYKzlW3nsoz-13" edge="1">
+          <mxGeometry x="-0.1077" y="38" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1272" y="1312" />
+              <mxPoint x="1272" y="1342" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-36" value="(Error al reiniciar)&#xa;«ACL:FAILURE»" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-8" target="Npk_r9rgoqYKzlW3nsoz-13" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1056" y="1461" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-37" value="Notifica y escala a intervención manual" style="curved=1;endArrow=block;rounded=0;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-13" target="Npk_r9rgoqYKzlW3nsoz-13" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1272" y="1513" />
+              <mxPoint x="1272" y="1543" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-38" value="14B: Guarda reporte del incidente&#xa;[generarReporte()]" style="curved=1;endArrow=block;rounded=0;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-13" target="Npk_r9rgoqYKzlW3nsoz-13" edge="1">
+          <mxGeometry x="-0.1692" y="28" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1272" y="1616" />
+              <mxPoint x="1272" y="1646" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-39" value="5: Compara urgencia de A y B y elige&#xa;hospital prioritario [decidirTraslado()]" style="curved=1;endArrow=block;rounded=0;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-7" target="Npk_r9rgoqYKzlW3nsoz-7" edge="1">
+          <mxGeometry x="-0.2154" y="54" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="546" y="1769" />
+              <mxPoint x="546" y="1799" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-40" value="6: preparar_traslado_lote_C_hospital_prioritario" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-7" target="Npk_r9rgoqYKzlW3nsoz-3" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="303" y="1872" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-41" value="7A: (Confirma que ejecutará el traslado)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-3" target="Npk_r9rgoqYKzlW3nsoz-7" edge="1">
+          <mxGeometry x="0.0881" y="11" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="302" y="1991" />
+            </Array>
+            <mxPoint x="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-42" value="8: traslado_realizado_inventarios_actualizados" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=horizontal;curved=0;rounded=0;endArrow=block;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-3" target="Npk_r9rgoqYKzlW3nsoz-7" edge="1">
+          <mxGeometry x="0.3472" y="4" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="302" y="2064" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-43" value="9: Si sobró demanda, envía el otro hospital&#xa;a lista de espera o Situación 1" style="curved=1;endArrow=block;rounded=0;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-7" target="Npk_r9rgoqYKzlW3nsoz-7" edge="1">
+          <mxGeometry x="-0.1846" y="64" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="546" y="2137" />
+              <mxPoint x="546" y="2167" />
+            </Array>
+            <mxPoint y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-44" value="7B: (Rechaza traslado por inconveniente)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-4" target="Npk_r9rgoqYKzlW3nsoz-7" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="302" y="2286" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-45" value="Reasigna lote al otro hospital&#xa;[decidirTraslado()]" style="curved=1;endArrow=block;rounded=0;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-7" target="Npk_r9rgoqYKzlW3nsoz-7" edge="1">
+          <mxGeometry x="-0.2308" y="24" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="546" y="2359" />
+              <mxPoint x="546" y="2389" />
+            </Array>
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-46" value="(Prepara traslado al nuevo hospital)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;endArrow=block;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-7" target="Npk_r9rgoqYKzlW3nsoz-5" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="303" y="2462" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Npk_r9rgoqYKzlW3nsoz-47" value="(Traslado reasignado completado)" style="verticalAlign=bottom;edgeStyle=elbowEdgeStyle;elbow=horizontal;curved=0;rounded=0;endArrow=block;" parent="1" source="Npk_r9rgoqYKzlW3nsoz-5" target="Npk_r9rgoqYKzlW3nsoz-7" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="302" y="2535" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="NfETCfPesDUuHthVn2-5-1" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: nowrap; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&quot;&gt;«ACL:QUERY-REF»&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="640" y="280" width="130" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="NfETCfPesDUuHthVn2-5-2" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: nowrap; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&quot;&gt;«ACL:INFORM»&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="240" y="210" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NfETCfPesDUuHthVn2-5-4" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: nowrap; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&quot;&gt;«ACL:INFORM»&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="640" y="510" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NfETCfPesDUuHthVn2-5-5" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: nowrap; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&quot;&gt;«ACL:INFORM»&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="810" y="730" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NfETCfPesDUuHthVn2-5-6" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: nowrap; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&quot;&gt;«ACL:REQUEST»&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="990" y="910" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="NfETCfPesDUuHthVn2-5-7" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: nowrap; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&quot;&gt;«ACL:AGREE»&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="1009.5" y="1030" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NfETCfPesDUuHthVn2-5-8" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: nowrap; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&quot;&gt;«ACL:INFORM»&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="990" y="1200" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NfETCfPesDUuHthVn2-5-9" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: nowrap; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&quot;&gt;«ACL:REQUEST»&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="239" y="1830" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NfETCfPesDUuHthVn2-5-10" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: nowrap; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&quot;&gt;«ACL:AGREE»&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="249" y="1940" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NfETCfPesDUuHthVn2-5-11" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: nowrap; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&quot;&gt;«ACL:INFORM»&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="320" y="2020" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NfETCfPesDUuHthVn2-5-12" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: nowrap; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&quot;&gt;«ACL:REFUSE»&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="240" y="2250" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NfETCfPesDUuHthVn2-5-13" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: nowrap; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&quot;&gt;«ACL:REQUEST»&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="235" y="2420" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="NfETCfPesDUuHthVn2-5-14" value="&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 11px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: center; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: nowrap; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&quot;&gt;«ACL:INFORM»&lt;/span&gt;" style="text;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="244" y="2500" width="110" height="40" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

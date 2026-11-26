@@ -1,25 +1,34 @@
 # SMA de abastecimiento de medicamentos · Red de hospitales públicos
 
-Sistema multiagente que reproduce la **Situación 1**: un brote respiratorio en
-el Hospital A provoca riesgo de desabastecimiento de un antibiótico. Los
-agentes detectan, pronostican, coordinan un traslado desde otro hospital y
-completan la compra al proveedor alterno, mientras el Supervisor registra todo.
+Sistema multiagente con **dos situaciones** que se eligen desde el mismo panel:
 
-El diagrama de secuencia **se genera desde la traza real** de la ejecución, no
-está dibujado a mano. `out/s1_secuencia.mmd` y `Diagrama.drawio` salen de los
-mismos eventos; el segundo se regenera con `python -m sma.diagrama`.
+- **Situación 1:** un brote respiratorio en el Hospital A provoca riesgo de
+  desabastecimiento. Los agentes detectan, pronostican, coordinan un traslado
+  desde otro hospital y completan la compra al proveedor alterno.
+- **Situación 2:** un lote de amoxicilina está por vencer en el Hospital C y los
+  hospitales A y B compiten por él. El Agente de Pronóstico deja de responder,
+  el Supervisor detecta el timeout y lo reinicia, y el Coordinador decide con la
+  última estimación o con el historial de consumo.
+
+Los diagramas de secuencia **salen de la traza real** de cada ejecución, no
+están dibujados a mano. En la Situación 1, `out/s1_secuencia.mmd` y
+`Diagrama.drawio` se generan de los mismos eventos; el segundo se regenera con
+`python -m sma.diagrama`. En la Situación 2, `out/s2_secuencia.mmd` se descarga
+desde el panel y el dibujo del informe es `Diagrama2.drawio`.
 
 ## Qué demuestra
 
 - Percepción distribuida: cada agente lee solo lo que le corresponde.
-- Comunicación **FIPA-ACL**: `INFORM`, `REQUEST`, `AGREE`, `FAILURE`,
+- Comunicación **FIPA-ACL**: `INFORM`, `REQUEST`, `AGREE`, `REFUSE`, `FAILURE`,
   `QUERY-REF`, `QUERY-IF`, con `conversation-id` y protocolo.
 - Coordinación bajo incertidumbre: traslado + compra con presupuesto limitado.
-- Negociación implícita: el Coordinador prioriza y elige proveedor.
-- Supervisión: registro de eventos, disponibilidad y reporte de cierre.
+- **Competencia por un recurso escaso:** un lote solo puede ir a un hospital;
+  el Coordinador compara urgencias y reasigna si el traslado se rechaza.
+- **Tolerancia a fallos:** el Supervisor detecta el timeout, notifica, reinicia
+  al Pronóstico y escala si el reinicio falla, sin detener la operación.
 - Reproducibilidad: semilla fija, misma traza en cada ejecución.
 
-## Matriz de "y si"
+## Matriz de "y si" de la Situación 1
 
 La decisión del Coordinador vive en `sma/decision.py` como función pura y cada
 caso es una variante declarativa en `config/variantes.yaml`. No se duplica el
@@ -41,24 +50,40 @@ escenario: solo se cambian los datos que provocan el caso.
 | `presupuesto_parcial` | Presupuesto corto | Compra parcial y residual |
 | `dos_hospitales` | Dos hospitales compiten | Prioriza por agotamiento; dos órdenes |
 
+## Matriz de "y si" de la Situación 2
+
+Las reglas puras están en `sma/decision_s2.py` y los casos en
+`config/variantes_s2.yaml`.
+
+| Variante | Situación | Resultado |
+|---|---|---|
+| `s2_base` | Timeout del Pronóstico | Se reinicia y el lote va a A |
+| `s2_pronostico_ok` | El Pronóstico responde | Decide con la proyección |
+| `s2_traslado_rechazado` | Inventario rechaza el traslado | Reasigna el lote a B |
+| `s2_reinicio_falla` | El reinicio responde `FAILURE` | Escala a intervención manual |
+| `s2_sin_receptor` | A y B rechazan el lote | Escala y el lote queda en C |
+| `s2_sin_estimacion` | El Pronóstico cae antes de estimar | Usa el historial de consumo |
+| `s2_sin_riesgo` | El lote no está por vencer | No hay traslado ni incidente |
+
 ```powershell
 python -m sma.run --listar
 python -m sma.run --variante solo_traslado
+python -m sma.run --situacion 2 --listar
+python -m sma.run --situacion 2 --variante s2_pronostico_ok
 ```
 
 Cada variante se ejecuta en los tests de extremo a extremo y también con las
-funciones puras de decisión (`tests/test_variantes.py`).
+funciones puras de decisión (`tests/test_variantes.py`, `tests/test_s2.py`).
 
 ## Arquitectura
 
-| Concepto MAS-ML | Implementación |
-|---|---|
-| Environment | `RedHospitalaria` (`sma/model.py`), entorno compartido |
-| Organization | `SistemaAbastecimiento`: los cinco roles del escenario |
-| Role | Monitor de Inventario, Pronosticador, Coordinador, Comprador, Supervisor |
-| Agent | Clases que heredan de `mesa.Agent` (`sma/agents/`) |
-| Object | `Lote`, `OrdenCompra`, `Proveedor` (`sma/domain/models.py`) |
-| Relaciones | Control del Supervisor, dependencia de Compras respecto al Coordinador, propiedad de objetos del dominio |
+| Concepto MAS-ML | Situación 1 | Situación 2 |
+|---|---|---|
+| Environment | `RedHospitalaria` (`sma/model.py`) | `RedHospitalariaS2` (`sma/model_s2.py`) |
+| Organization | `SistemaAbastecimiento` | `SistemaLoteCompartido` |
+| Roles | Inventario, Pronóstico, Coordinador, Compras, Supervisor | Inventario, Pronóstico, Coordinador, Supervisor |
+| Object | `Lote`, `OrdenCompra`, `Proveedor` | `Lote` (objeto que cambia de hospital) |
+| Relaciones | Control del Supervisor; dependencia de Compras | Control del Supervisor; competencia A/B por el lote |
 
 **Stack:** Mesa 3.5.3 (framework de simulación multiagente: modelo, agentes,
 activación y semilla) + una capa FIPA-ACL propia (`sma/acl.py`, `sma/bus.py`),
@@ -66,7 +91,8 @@ porque Mesa no implementa el estándar de comunicación.
 
 El bus entrega los mensajes al inicio de la ronda siguiente. Eso hace
 determinista el orden de las conversaciones y reproduce las rondas del
-diagrama de secuencia (11 rondas para el flujo completo).
+diagrama de secuencia: 11 rondas para la Situación 1 y 9 para el flujo base de
+la Situación 2.
 
 ## Ejecutar en local
 
@@ -75,27 +101,32 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 
-python -m sma.run          # traza, métricas y verificación por consola
-python -m sma.diagrama     # regenera Diagrama.drawio desde la traza
-pytest                     # pruebas del escenario y ramas alternativas
-streamlit run app.py       # panel web
+python -m sma.run                    # Situación 1 por consola
+python -m sma.run --situacion 2      # Situación 2 por consola
+python -m sma.diagrama               # regenera Diagrama.drawio (S1)
+pytest                               # pruebas de ambas situaciones
+streamlit run app.py                 # panel web con selector
 ```
 
-El comando `python -m sma.run` genera además:
+`python -m sma.run` genera además:
 
-- `out/s1_traza.json` — todos los eventos y mensajes.
-- `out/s1_secuencia.mmd` — diagrama Mermaid listo para el informe.
+- `out/s1_traza.json` / `out/s1_secuencia.mmd` — Situación 1.
+- `out/s2_traza.json` / `out/s2_secuencia.mmd` — Situación 2.
 
 ## Panel web
 
 El panel permite:
 
-- Elegir cualquiera de las variantes del escenario.
+- **Cambiar entre Situación 1 y Situación 2** en la barra lateral.
+- Elegir cualquiera de las variantes de la situación activa.
 - Ver la traza por rondas y fases (A/B, C, D, E).
-- Consultar las 16 verificaciones del flujo base.
+- Consultar las 16 verificaciones de la S1 y las 19 de la S2.
 - Comparar lo esperado con lo real en las variantes.
 - Consultar la matriz completa de casos.
 - Descargar la traza y el diagrama de secuencia (`.mmd`).
+
+En la Situación 2 el panel muestra el lote asignado, el faltante, el riesgo
+residual, si hubo timeout y el resultado del reinicio.
 
 ## Cómo probarlo paso a paso
 
@@ -109,33 +140,43 @@ $py = "C:\Users\123cr\.venvs\sma-red-hospitales\Scripts\python.exe"
 # 2. Dependencias
 & $py -m pip install -r requirements.txt
 
-# 3. Pruebas automáticas -> debe decir "41 passed"
+# 3. Pruebas automáticas -> debe decir "65 passed"
 & $py -m pytest
 
-# 4. Escenario por consola -> debe mostrar 16 líneas [OK]
+# 4. Situación 1 -> 16 líneas [OK]
 & $py -m sma.run
 
-# 4b. Cualquier "y si"
+# 4b. Cualquier "y si" de la S1
 & $py -m sma.run --variante solo_traslado
 & $py -m sma.run --listar
 
-# 5. Panel web -> abre http://localhost:8501
+# 5. Situación 2 -> 19 líneas [OK]
+& $py -m sma.run --situacion 2
+
+# 5b. Cualquier "y si" de la S2
+& $py -m sma.run --situacion 2 --variante s2_traslado_rechazado
+& $py -m sma.run --situacion 2 --listar
+
+# 6. Panel web -> abre http://localhost:8501
 & $py -m streamlit run app.py
 ```
 
 Qué mirar:
 
-- En `python -m sma.run`, la sección **Métricas** debe dar cobertura `1.0`,
-  orden `confirmada`, traslado `470`, compra `110` y presupuesto restante
-  positivo.
-- En el panel, pestaña **Verificación**: 16/16 en verde.
+- En la S1, la sección **Métricas** debe dar cobertura `1.0`, orden
+  `confirmada`, traslado `470`, compra `110` y presupuesto restante positivo.
+- En la S2 base, el lote `L-C-001` (200 uds) debe quedar asignado a `H_A`,
+  `H_B` en lista de espera, timeout detectado y reinicio `exitoso`.
+- En el panel, pestaña **Verificación**: 16/16 en S1 y 19/19 en S2.
 - Pestaña **Traza**: métricas, decisión del Coordinador y descarga del diagrama
-  en `.mmd` para el informe. El dibujo completo está en `Diagrama.drawio`.
-- Selector **Variante**: elige `proveedores_retrasados` o `presupuesto_parcial`
-  y mira cómo cambia la decisión, el riesgo residual y la traza.
-- Pestaña **Matriz de casos**: las 13 variantes con su decisión esperada.
+  en `.mmd`. Los dibujos completos son `Diagrama.drawio` y `Diagrama2.drawio`.
+- Selector **Situación**: cambia a la S2 y prueba `s2_reinicio_falla` o
+  `s2_sin_receptor` para ver el escalado.
+- Pestaña **Matriz de casos**: las 13 variantes de S1 o las 7 de S2.
 
 ## Despliegue gratuito (Streamlit Community Cloud)
+
+Demo: <https://sma-red-hospitales-aawy4zv7fgovymwsyfkx74.streamlit.app/>
 
 1. Sube el repo a GitHub como `sma-red-hospitales`.
 2. Entra en <https://share.streamlit.io> → **New app**.
@@ -150,21 +191,29 @@ minutos antes de la demo.
 ## Estructura
 
 ```
-config/s1.yaml          catálogo abierto de medicamentos, hospitales, proveedores
-config/variantes.yaml   matriz de "y si" como overrides del escenario base
-sma/acl.py              mensajes y performativas FIPA-ACL
-sma/bus.py              bus en proceso con entrega por rondas
-sma/trace.py            traza + exportación a Mermaid
-sma/diagrama.py         exportación de la traza a draw.io (Diagrama.drawio)
-sma/decision.py         planificador puro: traslado, compra, escalado
-sma/variantes.py        carga de variantes declarativas
-sma/domain/models.py    Lote, OrdenCompra, Proveedor, Hospital
-sma/model.py            RedHospitalaria (entorno Mesa)
-sma/agents/             los cinco agentes
-sma/scenario/s1.py      verificación paso a paso del escenario
-sma/run.py              ejecución y CLI
-app.py                  panel Streamlit
-tests/                  pruebas
+config/s1.yaml             catálogo abierto, hospitales y proveedores (S1)
+config/variantes.yaml      matriz de "y si" de la S1
+config/s2.yaml             hospitales, lote en riesgo y opciones (S2)
+config/variantes_s2.yaml   matriz de "y si" de la S2
+sma/acl.py                 mensajes y performativas FIPA-ACL
+sma/bus.py                 bus en proceso con entrega por rondas
+sma/trace.py               traza + exportación a Mermaid (participantes por escenario)
+sma/diagrama.py            exportación de la traza S1 a draw.io
+sma/forecast.py            Holt + estacionalidad compartido por S1 y S2
+sma/decision.py            planificador puro de la S1
+sma/decision_s2.py         urgencia, prioridad y traslado del lote (S2)
+sma/variantes.py           carga de variantes de la S1
+sma/variantes_s2.py        carga de variantes de la S2
+sma/domain/models.py       Lote, OrdenCompra, Proveedor, Hospital
+sma/model.py               RedHospitalaria (entorno Mesa de la S1)
+sma/model_s2.py            RedHospitalariaS2 (entorno Mesa de la S2)
+sma/agents/                los cinco agentes de la S1
+sma/agents/s2/             los cuatro agentes de la S2
+sma/scenario/s1.py         verificación paso a paso de la S1
+sma/scenario/s2.py         verificación paso a paso de la S2
+sma/run.py                 ejecución y CLI de ambas situaciones
+app.py                     panel Streamlit con selector
+tests/                     pruebas
 ```
 
 ## Configuración
@@ -175,13 +224,19 @@ y aparece en todo el sistema. Los umbrales se derivan de `stock_seguridad_dias`
 y del consumo diario; el excedente descuenta el stock de seguridad y un colchón
 logístico de dos días.
 
+La Situación 2 se configura en `config/s2.yaml`: hospitales y consumos, lote en
+riesgo (`lote_riesgo`), umbral de vencimiento y opciones (`pronostico_caido`,
+`ronda_fallo_pronostico`, `reinicio_falla`, `rechazos_traslado`).
+
 ## Alcance y limitaciones
 
 - La compra termina en orden **confirmada**; no se simula la entrega física.
-- El reinicio de agentes (`solicitarReinicio`) queda fuera: pertenece a la
-  Situación 2. El Supervisor sí notifica fallos.
-- Con varios riesgos, el Coordinador los atiende en cola por días hasta el
-  agotamiento. Un hospital en riesgo o recién abastecido no actúa como donante.
+- El traslado del lote en la S2 es inmediato en la misma ronda; no se modela el
+  tiempo de transporte entre hospitales.
+- El fallo del Pronóstico es un timeout de consulta: el agente conserva su
+  última estimación y el Supervisor lo reinicia con el protocolo FIPA-Request.
+- Con varios riesgos, el Coordinador de la S1 los atiende en cola por días hasta
+  el agotamiento. Un hospital en riesgo o recién abastecido no actúa como donante.
 - La emergencia libera el colchón logístico, pero respeta el stock de seguridad.
 - El transporte ACL es en proceso. Sustituirlo por XMPP no requiere tocar a los
   agentes, solo el adaptador del bus.

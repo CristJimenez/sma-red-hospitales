@@ -1,0 +1,60 @@
+# Situación 2: lote próximo a vencer, demanda en competencia y falla del Pronóstico
+#
+# H_C tiene un lote grande de amoxicilina que caduca pronto y consume poco.
+# H_A y H_B se quedan cortos y compiten por ese mismo lote: solo puede ir a uno.
+
+semilla: 11
+horizonte_pronostico_dias: 14
+ronda_inicio: 1
+
+opciones:
+  pronostico_caido: true         # el Agente de Pronóstico deja de responder
+  ronda_fallo_pronostico: 3      # ronda en la que se cae (antes deja su estimación previa)
+  reinicio_falla: false          # el reinicio termina en FAILURE
+  rechazos_traslado: 0           # nº de traslados que Inventario rechaza antes de aceptar
+  dias_para_vencer: 30           # umbral para considerar el lote "próximo a vencer"
+
+medicamentos:
+  amoxicilina:
+    nombre: Amoxicilina 500 mg
+    critico: true
+    cadena_frio: false
+    precio_referencia: 2.50
+    vida_util_dias: 365
+
+# Lote que dispara la situación: se identifica por hospital + lote.
+lote_riesgo:
+  hospital: H_C
+  medicamento: amoxicilina
+  lote: L-C-001
+
+hospitales:
+  H_A:
+    nombre: Hospital A
+    complejidad: alta
+    camas: 600
+    stock_seguridad_dias: 5
+    inventario:
+      amoxicilina: {cantidad: 60, lote: L-A-001, vence_en_dias: 90}
+    consumo_diario:
+      amoxicilina: 20
+
+  H_B:
+    nombre: Hospital B
+    complejidad: media
+    camas: 250
+    stock_seguridad_dias: 5
+    inventario:
+      amoxicilina: {cantidad: 40, lote: L-B-001, vence_en_dias: 60}
+    consumo_diario:
+      amoxicilina: 10
+
+  H_C:
+    nombre: Hospital C
+    complejidad: baja
+    camas: 120
+    stock_seguridad_dias: 4
+    inventario:
+      amoxicilina: {cantidad: 200, lote: L-C-001, vence_en_dias: 12}
+    consumo_diario:
+      amoxicilina: 2

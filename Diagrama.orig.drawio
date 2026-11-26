@@ -82,10 +82,10 @@
             <mxPoint x="140" y="190" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-20" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="leerRegistros()" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-20" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="leerRegistros(amoxicilina)" vertex="1">
           <mxGeometry height="30" width="60" x="200" y="160" as="geometry" />
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-29" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="stock, fechasCaducidad, consumoDiario" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-29" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="stock, consumoDiario, lotesPorVencer, umbral" vertex="1">
           <mxGeometry height="30" width="60" x="190" y="210" as="geometry" />
         </mxCell>
         <mxCell id="hwfyBRAKdk633a4AavUf-31" edge="1" parent="1" source="mJGH1OCtk8uf-IwQjtro-19" style="endArrow=none;dashed=1;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="hwfyBRAKdk633a4AavUf-30" value="">
@@ -116,7 +116,7 @@
             <mxPoint x="330" y="370" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-34" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="compararUmbral()" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-34" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="detectarRiesgos()" vertex="1">
           <mxGeometry height="30" width="60" x="360" y="250" as="geometry" />
         </mxCell>
         <mxCell id="hwfyBRAKdk633a4AavUf-36" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="generarEvento&lt;div&gt;Riesgo()&lt;/div&gt;" vertex="1">
@@ -149,7 +149,7 @@
             <mxPoint x="130" y="640" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-47" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="consultar historial de consumo" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-47" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="consultarHistorial(amoxicilina)" vertex="1">
           <mxGeometry height="30" width="100" x="210" y="610" as="geometry" />
         </mxCell>
         <mxCell id="hwfyBRAKdk633a4AavUf-48" edge="1" parent="1" style="endArrow=open;dashed=1;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;flowAnimation=0;endFill=0;startArrow=none;startFill=0;" value="">
@@ -158,7 +158,7 @@
             <mxPoint x="480" y="700" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-49" connectable="0" parent="hwfyBRAKdk633a4AavUf-48" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];inheritText=1;defaultLabelBackgroundColor=page;labelPadding=0 4;" value="historialConsumo, estacionalidad" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-49" connectable="0" parent="hwfyBRAKdk633a4AavUf-48" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];inheritText=1;defaultLabelBackgroundColor=page;labelPadding=0 4;" value="historial, estacionalidad" vertex="1">
           <mxGeometry relative="1" x="-0.1714" y="11" as="geometry">
             <mxPoint x="65" as="offset" />
           </mxGeometry>
@@ -182,7 +182,7 @@
             <mxPoint x="507.5" y="765" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-53" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Calcular proyeccion()" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-53" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="calcularProyeccion()" vertex="1">
           <mxGeometry height="30" width="120" x="555" y="740" as="geometry" />
         </mxCell>
         <mxCell id="hwfyBRAKdk633a4AavUf-54" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;" value="">
@@ -194,7 +194,7 @@
         <mxCell id="hwfyBRAKdk633a4AavUf-55" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;&amp;lt;ACL:INFORM&amp;gt;&amp;gt;" vertex="1">
           <mxGeometry height="30" width="60" x="560" y="790" as="geometry" />
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-56" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(demanda_proyectada antibiotico hospital_A creciente)" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-56" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(demanda_proyectada 700 uds H_A, mape 0.0977)" vertex="1">
           <mxGeometry height="30" width="130" x="530" y="820" as="geometry" />
         </mxCell>
         <mxCell id="hwfyBRAKdk633a4AavUf-59" edge="1" parent="1" source="hwfyBRAKdk633a4AavUf-80" style="endArrow=none;dashed=1;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="hwfyBRAKdk633a4AavUf-58" value="">
@@ -228,7 +228,7 @@
         <mxCell id="hwfyBRAKdk633a4AavUf-63" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;&amp;lt;ACL:QUERY-REF&amp;gt;&amp;gt;" vertex="1">
           <mxGeometry height="30" width="90" x="370" y="970" as="geometry" />
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-64" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(excedentes antibiotico red)" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-64" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(excedentes amoxicilina H_A, excluir H_A)" vertex="1">
           <mxGeometry height="30" width="170" x="325" y="1000" as="geometry" />
         </mxCell>
         <mxCell id="hwfyBRAKdk633a4AavUf-68" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;" value="">
@@ -237,7 +237,7 @@
             <mxPoint x="120" y="1150" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-69" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="leerRegistros()" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-69" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="leerRegistros(amoxicilina, modo=normal)" vertex="1">
           <mxGeometry height="30" width="60" x="190" y="1120" as="geometry" />
         </mxCell>
         <mxCell id="hwfyBRAKdk633a4AavUf-73" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="hwfyBRAKdk633a4AavUf-72" value="">
@@ -280,7 +280,7 @@
             <mxPoint x="1040" y="1570" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-88" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(decision traslado y compra)" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-88" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(decision traslado_y_compra: 470 + 110 de P2)" vertex="1">
           <mxGeometry height="30" width="180" x="770" y="1520" as="geometry" />
         </mxCell>
         <mxCell id="hwfyBRAKdk633a4AavUf-89" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;" value="">
@@ -292,7 +292,7 @@
         <mxCell id="hwfyBRAKdk633a4AavUf-90" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;&amp;lt;ACL:REQUEST&amp;gt;&amp;gt;" vertex="1">
           <mxGeometry height="30" width="60" x="740" y="1700" as="geometry" />
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-91" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(comprar antibiotico cantidad_faltante presupuesto_autorizado)" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-91" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(comprar amoxicilina 110 uds, presupuesto 5000)" vertex="1">
           <mxGeometry height="30" width="130" x="705" y="1730" as="geometry" />
         </mxCell>
         <mxCell id="hwfyBRAKdk633a4AavUf-92" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;" value="">
@@ -304,7 +304,7 @@
         <mxCell id="hwfyBRAKdk633a4AavUf-93" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;&amp;lt;ACL:AGREE&amp;gt;&amp;gt;" vertex="1">
           <mxGeometry height="30" width="60" x="730" y="1865" as="geometry" />
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-95" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="[acepta gestionar la compra]" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-95" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="[Compras acepta el REQUEST]" vertex="1">
           <mxGeometry height="30" width="180" x="655" y="1823" as="geometry" />
         </mxCell>
         <mxCell id="hwfyBRAKdk633a4AavUf-97" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;" value="">
@@ -340,7 +340,7 @@
             <mxPoint x="1230" y="2200" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-106" connectable="0" parent="hwfyBRAKdk633a4AavUf-105" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];inheritText=1;defaultLabelBackgroundColor=page;labelPadding=0 4;" value="retraso, plazo_incumplido" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-106" connectable="0" parent="hwfyBRAKdk633a4AavUf-105" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];inheritText=1;defaultLabelBackgroundColor=page;labelPadding=0 4;" value="retraso=9 dias, precio 2.4, entrega 3 dias" vertex="1">
           <mxGeometry relative="1" x="-0.25" y="11" as="geometry">
             <mxPoint x="-55" y="-9" as="offset" />
           </mxGeometry>
@@ -351,7 +351,7 @@
             <mxPoint x="1392.5" y="2250" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-109" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="consultarProveedor(antibiotico)" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-109" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="consultarProveedor(P2)" vertex="1">
           <mxGeometry height="30" width="60" x="1285" y="2210" as="geometry" />
         </mxCell>
         <mxCell id="hwfyBRAKdk633a4AavUf-110" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;flowAnimation=0;endFill=0;startArrow=openThin;startFill=0;" value="">
@@ -360,7 +360,7 @@
             <mxPoint x="1400" y="2300" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-111" connectable="0" parent="hwfyBRAKdk633a4AavUf-110" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];inheritText=1;defaultLabelBackgroundColor=page;labelPadding=0 4;" value="disponibilidad, precio, tiempoEntrega" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-111" connectable="0" parent="hwfyBRAKdk633a4AavUf-110" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];inheritText=1;defaultLabelBackgroundColor=page;labelPadding=0 4;" value="precio 2.6, entrega 5 dias, sin retraso" vertex="1">
           <mxGeometry relative="1" x="-0.2717" y="11" as="geometry">
             <mxPoint x="-103" y="-9" as="offset" />
           </mxGeometry>
@@ -393,10 +393,10 @@
         <mxCell id="hwfyBRAKdk633a4AavUf-117" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;&amp;lt;ACL:INFORM&amp;gt;&amp;gt;" vertex="1">
           <mxGeometry height="30" width="60" x="720" y="2410" as="geometry" />
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-118" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(retraso proveedor_1; oferta proveedor_2)" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-118" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(retraso P1=9 dias, oferta P2=2.6)" vertex="1">
           <mxGeometry height="30" width="130" x="685" y="2440" as="geometry" />
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-119" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="AlertaRetraso()" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-119" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="alertarRetraso()" vertex="1">
           <mxGeometry height="30" width="60" x="715" y="2470" as="geometry" />
         </mxCell>
         <mxCell id="hwfyBRAKdk633a4AavUf-120" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;" value="">
@@ -408,10 +408,10 @@
         <mxCell id="hwfyBRAKdk633a4AavUf-122" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;&amp;lt;ACL:INFORM&amp;gt;&amp;gt;" vertex="1">
           <mxGeometry height="30" width="60" x="920" y="2550" as="geometry" />
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-123" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;code dir=&quot;ltr&quot;&gt;(retraso proveedor_1)&lt;/code&gt;" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-123" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;code dir=&quot;ltr&quot;&gt;(retraso_proveedor P1, 9 dias)&lt;/code&gt;" vertex="1">
           <mxGeometry height="30" width="160" x="870" y="2560" as="geometry" />
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-124" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="EnviarInform()" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-124" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="enviar(INFORM)" vertex="1">
           <mxGeometry height="30" width="60" x="920" y="2580" as="geometry" />
         </mxCell>
         <mxCell id="hwfyBRAKdk633a4AavUf-125" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;" value="">
@@ -423,7 +423,7 @@
         <mxCell id="hwfyBRAKdk633a4AavUf-126" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;code dir=&quot;ltr&quot;&gt;&amp;lt;&amp;lt;ACL:REQUEST&amp;gt;&amp;gt;&lt;/code&gt;" vertex="1">
           <mxGeometry height="30" width="60" x="740" y="2670" as="geometry" />
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-127" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(comprar a proveedor 2 dentro presupuesto)" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-127" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(comprar_a_proveedor P2, 110 uds)" vertex="1">
           <mxGeometry height="30" width="160" x="703.75" y="2690" as="geometry" />
         </mxCell>
         <mxCell id="hwfyBRAKdk633a4AavUf-131" edge="1" parent="1" source="mJGH1OCtk8uf-IwQjtro-98" style="endArrow=none;dashed=1;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="hwfyBRAKdk633a4AavUf-130" value="">
@@ -441,7 +441,7 @@
             <mxPoint x="1570" y="2930" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-136" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;code dir=&quot;ltr&quot;&gt;Crear orden (cantidad, fecha, estado)&lt;/code&gt;" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-136" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;code dir=&quot;ltr&quot;&gt;crear_orden(OC-001, 110 uds, P2, 286 EUR)&lt;/code&gt;" vertex="1">
           <mxGeometry height="30" width="210" x="1280" y="2890" as="geometry" />
         </mxCell>
         <mxCell id="hwfyBRAKdk633a4AavUf-137" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;" value="">
@@ -450,7 +450,7 @@
             <mxPoint x="1397.5" y="2990" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-138" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="enviar la orden de compra" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-138" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="enviar_orden(P2, 110 uds)" vertex="1">
           <mxGeometry height="30" width="170" x="1087.5" y="2960" as="geometry" />
         </mxCell>
         <mxCell id="hwfyBRAKdk633a4AavUf-139" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;" value="">
@@ -462,10 +462,10 @@
         <mxCell id="hwfyBRAKdk633a4AavUf-140" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;&amp;lt;ACL:INFORM&amp;gt;&amp;gt;" vertex="1">
           <mxGeometry height="30" width="60" x="730" y="3050" as="geometry" />
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-142" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(orden generada proveedor 2 estado=generada)" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-142" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(orden_generada OC-001, P2, 286 EUR)" vertex="1">
           <mxGeometry height="30" width="160" x="683.75" y="3080" as="geometry" />
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-143" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="EnviarInform()" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-143" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="enviar(INFORM)" vertex="1">
           <mxGeometry height="30" width="60" x="730" y="3100" as="geometry" />
         </mxCell>
         <mxCell id="hwfyBRAKdk633a4AavUf-144" edge="1" parent="1" style="endArrow=none;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;flowAnimation=0;endFill=0;startArrow=classic;startFill=1;" value="">
@@ -477,7 +477,7 @@
         <mxCell id="hwfyBRAKdk633a4AavUf-146" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;&amp;lt;ACL:FAILURE&amp;gt;&amp;gt;" vertex="1">
           <mxGeometry height="30" width="60" x="733.75" y="3210" as="geometry" />
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-147" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;table&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt; &lt;code dir=&quot;ltr&quot;&gt;(presupuesto_insuficiente)&lt;/code&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-147" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;code dir=&quot;ltr&quot;&gt;(presupuesto_insuficiente)&lt;/code&gt;" vertex="1">
           <mxGeometry height="30" width="60" x="750" y="3230" as="geometry" />
         </mxCell>
         <mxCell id="hwfyBRAKdk633a4AavUf-148" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="else [Oferta supera presupuesto]" vertex="1">
@@ -492,10 +492,10 @@
         <mxCell id="hwfyBRAKdk633a4AavUf-150" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;&amp;lt;ACL:QUERY-IF&amp;gt;&amp;gt;" vertex="1">
           <mxGeometry height="30" width="80" x="720" y="3330" as="geometry" />
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-151" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(orden confirmada proveedor 2)" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-151" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(orden_confirmada? OC-001)" vertex="1">
           <mxGeometry height="30" width="120" x="703.75" y="3360" as="geometry" />
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-152" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Solicitarconfirmacion()" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-152" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="solicitarConfirmacion()" vertex="1">
           <mxGeometry height="30" width="60" x="740" y="3380" as="geometry" />
         </mxCell>
         <mxCell id="hwfyBRAKdk633a4AavUf-153" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;" value="">
@@ -507,10 +507,10 @@
         <mxCell id="hwfyBRAKdk633a4AavUf-154" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;&amp;lt;ACL:INFORM&amp;gt;&amp;gt;" vertex="1">
           <mxGeometry height="30" width="60" x="730" y="3420" as="geometry" />
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-156" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(orden confirmada true)" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-156" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(orden_confirmada=true OC-001)" vertex="1">
           <mxGeometry height="30" width="140" x="700" y="3440" as="geometry" />
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-157" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="EnviarInform()" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-157" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="enviar(INFORM)" vertex="1">
           <mxGeometry height="30" width="60" x="730" y="3460" as="geometry" />
         </mxCell>
         <mxCell id="hwfyBRAKdk633a4AavUf-159" edge="1" parent="1" style="endArrow=none;dashed=1;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="hwfyBRAKdk633a4AavUf-158" value="">
@@ -567,7 +567,7 @@
             <mxPoint x="500" y="410" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-40" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;code dir=&quot;ltr&quot;&gt;(riesgo_desabastecimiento antibiotico hospital_A)&lt;/code&gt;" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-40" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;code dir=&quot;ltr&quot;&gt;(riesgo_desabastecimiento amoxicilina H_A stock=120 umbral=150)&lt;/code&gt;" vertex="1">
           <mxGeometry height="30" width="60" x="470" y="410" as="geometry" />
         </mxCell>
         <mxCell id="mJGH1OCtk8uf-IwQjtro-13" edge="1" parent="1" source="hwfyBRAKdk633a4AavUf-50" style="endArrow=none;dashed=1;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" value="">
@@ -622,7 +622,7 @@
             <mxPoint x="1055" y="620" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="mJGH1OCtk8uf-IwQjtro-25" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="RegistrarEventos()" vertex="1">
+        <mxCell id="mJGH1OCtk8uf-IwQjtro-25" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="registrarEvento()" vertex="1">
           <mxGeometry height="30" width="60" x="1130" y="590" as="geometry" />
         </mxCell>
         <mxCell id="mJGH1OCtk8uf-IwQjtro-23" edge="1" parent="1" source="mJGH1OCtk8uf-IwQjtro-59" style="endArrow=none;dashed=1;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="mJGH1OCtk8uf-IwQjtro-21" value="">
@@ -640,7 +640,7 @@
         <mxCell id="mJGH1OCtk8uf-IwQjtro-33" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;sequenceEdgeStyle&quot;,&quot;libavoidRouting&quot;:0,&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
           <mxGeometry height="20" width="15" x="492.5" y="880" as="geometry" />
         </mxCell>
-        <mxCell id="mJGH1OCtk8uf-IwQjtro-30" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="EnviarEstimacion()" vertex="1">
+        <mxCell id="mJGH1OCtk8uf-IwQjtro-30" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="enviar(INFORM)" vertex="1">
           <mxGeometry height="30" width="60" x="565" y="850" as="geometry" />
         </mxCell>
         <mxCell id="mJGH1OCtk8uf-IwQjtro-40" edge="1" parent="1" source="hwfyBRAKdk633a4AavUf-87" style="endArrow=none;dashed=1;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.39;exitY=-0.039;exitDx=0;exitDy=0;exitPerimeter=0;" value="">
@@ -650,7 +650,7 @@
             <mxPoint x="850" y="540" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-44" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(informe nventario riesgo hospital_A)" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-44" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(informe_inventario H_A nivel=critico)" vertex="1">
           <mxGeometry height="30" width="170" x="765" y="490" as="geometry" />
         </mxCell>
         <mxCell id="mJGH1OCtk8uf-IwQjtro-41" edge="1" parent="1" source="hwfyBRAKdk633a4AavUf-44" style="endArrow=none;dashed=1;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="hwfyBRAKdk633a4AavUf-43" value="">
@@ -681,7 +681,7 @@
             <mxPoint x="500" y="900" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-79" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(excedente hospital_B cantidad X)" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-79" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(excedentes H_B=344, H_C=126, total=470)" vertex="1">
           <mxGeometry height="30" width="130" x="435" y="1260" as="geometry" />
         </mxCell>
         <mxCell id="mJGH1OCtk8uf-IwQjtro-49" edge="1" parent="1" source="hwfyBRAKdk633a4AavUf-79" style="endArrow=none;dashed=1;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="hwfyBRAKdk633a4AavUf-78" value="">
@@ -699,7 +699,7 @@
             <mxPoint x="495" y="1280" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="mJGH1OCtk8uf-IwQjtro-50" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="EnviarInform()" vertex="1">
+        <mxCell id="mJGH1OCtk8uf-IwQjtro-50" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="enviar(INFORM)" vertex="1">
           <mxGeometry height="30" width="60" x="470" y="1280" as="geometry" />
         </mxCell>
         <mxCell id="mJGH1OCtk8uf-IwQjtro-52" edge="1" parent="1" style="edgeStyle=none;orthogonalLoop=1;jettySize=auto;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;" value="">
@@ -750,10 +750,10 @@
             <mxPoint x="850" y="1530" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="mJGH1OCtk8uf-IwQjtro-57" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="EnviarInform()" vertex="1">
+        <mxCell id="mJGH1OCtk8uf-IwQjtro-57" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="enviar(INFORM)" vertex="1">
           <mxGeometry height="30" width="60" x="820" y="1540" as="geometry" />
         </mxCell>
-        <mxCell id="mJGH1OCtk8uf-IwQjtro-61" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Registrar Eventos()" vertex="1">
+        <mxCell id="mJGH1OCtk8uf-IwQjtro-61" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="registrarEvento()" vertex="1">
           <mxGeometry height="30" width="130" x="1100" y="1600" as="geometry" />
         </mxCell>
         <mxCell id="mJGH1OCtk8uf-IwQjtro-60" edge="1" parent="1" source="hwfyBRAKdk633a4AavUf-103" style="endArrow=none;dashed=1;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" value="">
@@ -763,10 +763,10 @@
             <mxPoint x="1052.5" y="1675" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="mJGH1OCtk8uf-IwQjtro-63" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Enviar Request()" vertex="1">
+        <mxCell id="mJGH1OCtk8uf-IwQjtro-63" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="enviar(REQUEST)" vertex="1">
           <mxGeometry height="30" width="110" x="715" y="1760" as="geometry" />
         </mxCell>
-        <mxCell id="mJGH1OCtk8uf-IwQjtro-64" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(Comprar Antibioticos)" vertex="1">
+        <mxCell id="mJGH1OCtk8uf-IwQjtro-64" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(gestion_compra 110 uds)" vertex="1">
           <mxGeometry height="30" width="140" x="695" y="1880" as="geometry" />
         </mxCell>
         <mxCell id="mJGH1OCtk8uf-IwQjtro-68" edge="1" parent="1" source="mJGH1OCtk8uf-IwQjtro-71" style="endArrow=none;dashed=1;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="mJGH1OCtk8uf-IwQjtro-67" value="">
@@ -835,10 +835,10 @@
         <mxCell id="mJGH1OCtk8uf-IwQjtro-82" parent="1" style="shape=umlFrame;whiteSpace=wrap;html=1;pointerEvents=0;" value="alt" vertex="1">
           <mxGeometry height="285" width="320" x="600" y="1820" as="geometry" />
         </mxCell>
-        <mxCell id="mJGH1OCtk8uf-IwQjtro-83" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Transladar excendente de Ba A" vertex="1">
+        <mxCell id="mJGH1OCtk8uf-IwQjtro-83" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="traslado H_B-&gt;H_A 344, H_C-&gt;H_A 126" vertex="1">
           <mxGeometry height="30" width="225" x="310" y="1400" as="geometry" />
         </mxCell>
-        <mxCell id="mJGH1OCtk8uf-IwQjtro-84" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(no puedo gestionar compras" vertex="1">
+        <mxCell id="mJGH1OCtk8uf-IwQjtro-84" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(motivo=no_puedo_gestionar_compra)" vertex="1">
           <mxGeometry height="30" width="110" x="709" y="2020" as="geometry" />
         </mxCell>
         <mxCell id="mJGH1OCtk8uf-IwQjtro-85" edge="1" parent="1" source="mJGH1OCtk8uf-IwQjtro-91" style="endArrow=none;dashed=1;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="hwfyBRAKdk633a4AavUf-103" value="">
@@ -848,7 +848,7 @@
             <mxPoint x="1092.5" y="2160" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="hwfyBRAKdk633a4AavUf-103" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="consultarProveedor(antibiotico)" vertex="1">
+        <mxCell id="hwfyBRAKdk633a4AavUf-103" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="consultarProveedor(P1)" vertex="1">
           <mxGeometry height="30" width="60" x="1027.5" y="2120" as="geometry" />
         </mxCell>
         <mxCell id="mJGH1OCtk8uf-IwQjtro-86" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;sequenceEdgeStyle&quot;,&quot;libavoidRouting&quot;:0,&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
@@ -889,7 +889,7 @@
         <mxCell id="mJGH1OCtk8uf-IwQjtro-94" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="RegistrarEvento()" vertex="1">
           <mxGeometry height="30" width="60" x="1130" y="2660" as="geometry" />
         </mxCell>
-        <mxCell id="mJGH1OCtk8uf-IwQjtro-95" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Enviar Request()" vertex="1">
+        <mxCell id="mJGH1OCtk8uf-IwQjtro-95" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="enviar(REQUEST)" vertex="1">
           <mxGeometry height="30" width="110" x="715" y="2710" as="geometry" />
         </mxCell>
         <mxCell id="mJGH1OCtk8uf-IwQjtro-97" edge="1" parent="1" source="mJGH1OCtk8uf-IwQjtro-116" style="endArrow=none;dashed=1;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="mJGH1OCtk8uf-IwQjtro-96" value="">
@@ -920,7 +920,7 @@
             <mxPoint x="870" y="2890" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="mJGH1OCtk8uf-IwQjtro-101" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Generar ordenarOrdencompra()" vertex="1">
+        <mxCell id="mJGH1OCtk8uf-IwQjtro-101" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="generarOrdenCompra()" vertex="1">
           <mxGeometry height="30" width="60" x="960" y="2860" as="geometry" />
         </mxCell>
         <mxCell id="mJGH1OCtk8uf-IwQjtro-102" edge="1" parent="1" source="mJGH1OCtk8uf-IwQjtro-103" style="edgeStyle=none;orthogonalLoop=1;jettySize=auto;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;dashed=1;" value="">
@@ -969,7 +969,7 @@
             <mxPoint x="880" y="3040" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="mJGH1OCtk8uf-IwQjtro-103" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Confirmacion de recepcion" vertex="1">
+        <mxCell id="mJGH1OCtk8uf-IwQjtro-103" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="confirmacion_recepcion(P2)" vertex="1">
           <mxGeometry height="30" width="180" x="1060" y="3020" as="geometry" />
         </mxCell>
         <mxCell id="mJGH1OCtk8uf-IwQjtro-117" edge="1" parent="1" source="mJGH1OCtk8uf-IwQjtro-138" style="endArrow=none;dashed=1;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="mJGH1OCtk8uf-IwQjtro-116" value="">
@@ -1017,10 +1017,10 @@
             <mxPoint x="868.5" y="3690" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="mJGH1OCtk8uf-IwQjtro-128" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;&amp;lt;ACL: INFORM&amp;gt;&amp;gt;" vertex="1">
+        <mxCell id="mJGH1OCtk8uf-IwQjtro-128" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&amp;lt;&amp;lt;ACL:INFORM&amp;gt;&amp;gt;" vertex="1">
           <mxGeometry height="30" width="120" x="807.5" y="3820" as="geometry" />
         </mxCell>
-        <mxCell id="mJGH1OCtk8uf-IwQjtro-130" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(Fallo dectetado)" vertex="1">
+        <mxCell id="mJGH1OCtk8uf-IwQjtro-130" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="(fallo detectado)" vertex="1">
           <mxGeometry height="30" width="110" x="817.5" y="3850" as="geometry" />
         </mxCell>
         <mxCell id="mJGH1OCtk8uf-IwQjtro-135" edge="1" parent="1" source="mJGH1OCtk8uf-IwQjtro-136" style="endArrow=classic;html=1;rounded=0;defaultLabelBackgroundColor=page;labelPadding=0 4;" value="">
@@ -1063,7 +1063,7 @@
         <mxCell id="hwfyBRAKdk633a4AavUf-158" parent="1" style="html=1;points=[[0,0,0,0,5],[0,1,0,0,-5],[1,0,0,0,5],[1,1,0,0,-5]];perimeter=orthogonalPerimeter;outlineConnect=0;targetShapes=umlLifeline;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;sequenceEdgeStyle&quot;,&quot;libavoidRouting&quot;:0,&quot;curved&quot;:0,&quot;rounded&quot;:0};" value="" vertex="1">
           <mxGeometry height="170" width="15" x="1030" y="3550" as="geometry" />
         </mxCell>
-        <mxCell id="mJGH1OCtk8uf-IwQjtro-144" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="oferta de presupuesto" vertex="1">
+        <mxCell id="mJGH1OCtk8uf-IwQjtro-144" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="[oferta viable y dentro del presupuesto]" vertex="1">
           <mxGeometry height="30" width="130" x="683.75" y="2840" as="geometry" />
         </mxCell>
         <mxCell id="nZY-sp_cWsoLrN85UeAu-1" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="INFORM" vertex="1">

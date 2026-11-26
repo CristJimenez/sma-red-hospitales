@@ -36,10 +36,37 @@ ALIAS = {
     "orden_compra": "OC",
 }
 
+# Situación 2: sin Compras ni proveedores; el Lote es un objeto del dominio.
+PARTICIPANTES_S2 = [
+    ("RED", "Red de hospitales"),
+    ("INV", "Inventario"),
+    ("PRO", "Pronostico"),
+    ("COORD", "Coordinador"),
+    ("SUP", "Supervisor"),
+    ("LOTE", "Lote"),
+]
+
+ALIAS_S2 = {
+    "entorno": "RED",
+    "inventario": "INV",
+    "pronostico": "PRO",
+    "coordinador": "COORD",
+    "supervisor": "SUP",
+    "lote": "LOTE",
+}
+
 
 class Traza:
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        participantes: list[tuple[str, str]] | None = None,
+        alias: dict[str, str] | None = None,
+        autonumerar: bool = True,
+    ) -> None:
         self.eventos: list[dict[str, Any]] = []
+        self.participantes = participantes or PARTICIPANTES
+        self.alias = alias or ALIAS
+        self.autonumerar = autonumerar
 
     # ------------------------------------------------------------------
     # Registro
@@ -113,26 +140,28 @@ class Traza:
         return {"eventos": self.eventos}
 
     def a_mermaid(self) -> str:
-        lineas = ["sequenceDiagram", "    autonumber"]
-        for alias, nombre in PARTICIPANTES:
+        lineas = ["sequenceDiagram"]
+        if self.autonumerar:
+            lineas.append("    autonumber")
+        for alias, nombre in self.participantes:
             lineas.append(f"    participant {alias} as {nombre}")
 
         for evento in self.eventos:
             if evento["tipo"] == "mensaje":
-                origen = ALIAS.get(evento["emisor"], evento["emisor"])
-                destino = ALIAS.get(evento["receptor"], evento["receptor"])
+                origen = self.alias.get(evento["emisor"], evento["emisor"])
+                destino = self.alias.get(evento["receptor"], evento["receptor"])
                 texto = f"{evento['performativa'].upper()}: {_resumen(evento['contenido'])}"
                 lineas.append(f"    {origen}->>{destino}: {_limpiar(texto)}")
             elif evento["tipo"] == "entorno" and evento.get("origen") and evento.get("destino"):
-                origen = ALIAS.get(evento["origen"], evento["origen"])
-                destino = ALIAS.get(evento["destino"], evento["destino"])
+                origen = self.alias.get(evento["origen"], evento["origen"])
+                destino = self.alias.get(evento["destino"], evento["destino"])
                 texto = f"{evento['accion']}: {_resumen(evento['detalle'])}"
                 lineas.append(f"    {origen}->>{destino}: {_limpiar(texto)}")
             elif evento["tipo"] == "entorno":
                 texto = f"{evento['accion']}: {_resumen(evento['detalle'])}"
                 lineas.append(f"    Note over RED: {_limpiar(texto)}")
             elif evento["tipo"] == "accion":
-                alias = ALIAS.get(evento["agente"], evento["agente"])
+                alias = self.alias.get(evento["agente"], evento["agente"])
                 texto = f"{evento['accion']}({_resumen(evento['detalle'], 45)})"
                 lineas.append(f"    {alias}->>{alias}: {_limpiar(texto)}")
         return "\n".join(lineas)

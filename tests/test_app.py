@@ -21,3 +21,12 @@ def test_panel_ejecuta_una_variante_alternativa() -> None:
 
     assert not app.exception, app.exception
     assert any("OK" == metrica.value for metrica in app.metric)
+
+
+def test_panel_cambia_a_situacion_2() -> None:
+    app = AppTest.from_file(str(RAIZ / "app.py"), default_timeout=120).run()
+    app.radio[0].set_value("Situación 2").run()
+
+    assert not app.exception, app.exception
+    assert any(metrica.value == "H_A" for metrica in app.metric)
+    assert any("OK" == metrica.value for metrica in app.metric)

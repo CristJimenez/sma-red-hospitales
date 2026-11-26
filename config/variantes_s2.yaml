@@ -1,0 +1,135 @@
+# Matriz de "y si" de la Situación 2.
+#
+# Cada variante es un *override* sobre config/s2.yaml. Los tests comparan las
+# claves de `esperado` con las métricas reales de la ejecución.
+
+variantes:
+  s2_base:
+    titulo: "Timeout del Pronóstico y traslado a A"
+    descripcion: >-
+      El Pronóstico deja de responder, el Supervisor lo detecta y lo reinicia.
+      El Coordinador usa la última estimación y asigna el lote al Hospital A,
+      que se agota antes; B queda en lista de espera.
+    esperado:
+      resultado: exito
+      lote_asignado: H_A
+      reasignaciones: 0
+      timeout: true
+      reinicio: exitoso
+      fuente_demanda: ultima_estimacion
+      lista_espera: H_B
+      riesgo_residual: 165
+      escalado: false
+    overrides: {}
+
+  s2_pronostico_ok:
+    titulo: "El Pronóstico responde a tiempo"
+    descripcion: >-
+      Sin timeout ni recuperación: el Coordinador decide con la proyección del
+      Pronóstico y el lote va al Hospital A.
+    esperado:
+      resultado: exito
+      lote_asignado: H_A
+      reasignaciones: 0
+      timeout: false
+      reinicio: null
+      fuente_demanda: modelo
+      lista_espera: H_B
+      riesgo_residual: 165
+      escalado: false
+    overrides:
+      opciones:
+        pronostico_caido: false
+
+  s2_traslado_rechazado:
+    titulo: "Inventario rechaza el traslado y el lote se reasigna"
+    descripcion: >-
+      El primer traslado hacia A se rechaza por inconveniente; el Coordinador
+      reasigna el mismo lote al Hospital B y A queda en lista de espera.
+    esperado:
+      resultado: exito
+      lote_asignado: H_B
+      reasignaciones: 1
+      timeout: true
+      reinicio: exitoso
+      lista_espera: H_A
+      riesgo_residual: 250
+      escalado: false
+    overrides:
+      opciones:
+        rechazos_traslado: 1
+
+  s2_reinicio_falla:
+    titulo: "El reinicio del Pronóstico falla"
+    descripcion: >-
+      El Supervisor detecta el timeout, pero el Pronóstico responde FAILURE al
+      reinicio. El lote se asigna igual y el incidente se escala a intervención
+      manual.
+    esperado:
+      resultado: exito
+      lote_asignado: H_A
+      reasignaciones: 0
+      timeout: true
+      reinicio: fallido
+      fuente_demanda: ultima_estimacion
+      lista_espera: H_B
+      riesgo_residual: 165
+      escalado: true
+    overrides:
+      opciones:
+        reinicio_falla: true
+
+  s2_sin_receptor:
+    titulo: "Ningún hospital puede recibir el lote"
+    descripcion: >-
+      Inventario rechaza los traslados a A y a B. El Coordinador prioriza,
+      informa al Supervisor y escala; el lote queda registrado en C sin asignar.
+    esperado:
+      resultado: escalado
+      lote_asignado: null
+      reasignaciones: 1
+      timeout: true
+      lista_espera: null
+      riesgo_residual: 365
+      escalado: true
+    overrides:
+      opciones:
+        rechazos_traslado: 2
+
+  s2_sin_estimacion:
+    titulo: "El Pronóstico falla antes de dejar su estimación"
+    descripcion: >-
+      El Pronóstico se cae en la primera ronda: no hay estimación previa y el
+      Coordinador sustituye la proyección con la media del historial de consumo.
+    esperado:
+      resultado: exito
+      lote_asignado: H_A
+      reasignaciones: 0
+      timeout: true
+      reinicio: exitoso
+      fuente_demanda: historial
+      lista_espera: H_B
+      riesgo_residual: 151
+      escalado: false
+    overrides:
+      opciones:
+        ronda_fallo_pronostico: 1
+
+  s2_sin_riesgo:
+    titulo: "El lote no está próximo a vencer"
+    descripcion: >-
+      Con un umbral de 5 días el lote de C (12 días) no se considera en riesgo:
+      no hay traslado y el Supervisor cierra sin incidentes.
+    esperado:
+      resultado: sin_riesgo
+      lote_asignado: null
+      reasignaciones: 0
+      timeout: false
+      reinicio: null
+      fuente_demanda: null
+      lista_espera: null
+      riesgo_residual: 0
+      escalado: false
+    overrides:
+      opciones:
+        dias_para_vencer: 5
